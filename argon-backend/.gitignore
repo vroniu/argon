@@ -35,3 +35,6 @@ out/
 
 ### VS Code ###
 .vscode/
+
+flyway.conf
+src/main/resources/application.properties

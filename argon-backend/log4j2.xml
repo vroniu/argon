@@ -1,0 +1,10 @@
+<Configuration status="debug" name="argon" packages="">
+    <Appenders>
+        <Console name="stdout" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy-MM-dd HH:mm:ss} %p %m%n"/>
+        </Console>
+    </Appenders>
+</Configuration>
+<Root level="error">
+    <AppenderRef ref="STDOUT"/>
+</Root>
