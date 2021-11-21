@@ -1,12 +1,11 @@
-package src.argon.argon.project;
+package src.argon.argon.controller;
 
-import org.apache.tomcat.util.http.ResponseUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import src.argon.argon.dto.ProjectDTO;
+import src.argon.argon.service.ProjectService;
 
-import java.net.URISyntaxException;
 import java.util.List;
 
 @RestController

@@ -1,7 +1,8 @@
-package src.argon.argon.project;
+package src.argon.argon.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
+import src.argon.argon.entity.Project;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, Long> {
