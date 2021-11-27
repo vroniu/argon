@@ -49,6 +49,14 @@ public class Subproject {
         this.worktimes = worktimes;
     }
 
+    public Project getProject() {
+        return project;
+    }
+
+    public void setProject(Project project) {
+        this.project = project;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

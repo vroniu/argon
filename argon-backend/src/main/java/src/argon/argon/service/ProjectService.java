@@ -16,7 +16,6 @@ public class ProjectService {
     @Autowired
     ProjectMapper projectMapper;
 
-
     public List<ProjectDTO> findAllProjects() {
         return projectMapper.toDTO(projectRepository.findAll());
     }

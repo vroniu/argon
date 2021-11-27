@@ -25,4 +25,28 @@ public class ProjectDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
+    public Long getOrganizationId() {
+        return organizationId;
+    }
+
+    public void setOrganizationId(Long organizationId) {
+        this.organizationId = organizationId;
+    }
+
+    public String getOrganizationName() {
+        return organizationName;
+    }
+
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
+    }
+
+    public List<SubprojectDTO> getSubprojects() {
+        return subprojects;
+    }
+
+    public void setSubprojects(List<SubprojectDTO> subprojects) {
+        this.subprojects = subprojects;
+    }
 }
