@@ -1,0 +1,61 @@
+package src.argon.argon.security.config;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import src.argon.argon.security.filters.JWTRequestFilter;
+import src.argon.argon.security.service.UserService;
+
+import javax.servlet.http.HttpServletResponse;
+
+@EnableWebSecurity
+public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
+
+    @Autowired
+    UserService userService;
+
+    @Autowired
+    JWTRequestFilter jwtFilter;
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable().cors().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.exceptionHandling().authenticationEntryPoint(((request, response, authException) -> response.sendError(
+                HttpServletResponse.SC_UNAUTHORIZED,
+                authException.getMessage()
+        )));
+
+        http.authorizeRequests()
+                .antMatchers("/authenticate").permitAll()
+//                .antMatchers("/test").hasRole("ADMIN")
+                .anyRequest().authenticated();
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(username -> userService.loadUserByUsername(username));
+    }
+
+    @Override
+    @Bean
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    // TODO add password encoder
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+
+}
