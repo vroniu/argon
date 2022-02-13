@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.annotation.security.RolesAllowed;
 
 @RestController
-@RolesAllowed("ADMIN")
+@RolesAllowed("ROLE_ADMIN")
 public class TestController {
 
-    private static Logger logger = LogManager.getLogger(TestController.class);
+    private static final Logger logger = LogManager.getLogger(TestController.class);
 
     @GetMapping("/test")
     public String test() {
