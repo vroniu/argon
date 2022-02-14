@@ -1,0 +1,35 @@
+@import './reset.css';
+
+html, body {height: 100%; }
+body {
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  --material-primary: #673ab7;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+.hint-warn {
+  color: #f44336;
+}
+
+.pad-8px {
+  padding: 8px;
+}
+
+.toast-success {
+  background-color: #00C851;
+  color: white;
+}
+
+.toast-error {
+  background-color: #f44336;
+  color: white;
+}
+
+.toast-info {
+  background-color: #ffbb33;
+  color: white;
+}

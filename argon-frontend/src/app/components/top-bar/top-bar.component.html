@@ -1,0 +1,21 @@
+<div class="bar">
+  <div>
+    <button *ngIf="displayMenu" type="button" id="menu-button" mat-icon-button color="#ffffff" aria-label="Example icon button with a menu icon">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <a routerLink="/">
+    <img src="assets/logo.svg" id="argon-logo" alt="Argon logo">
+  </a>
+  <div>
+    <div *ngIf="displayUserInfo" id="user-info" class="pad-8px">
+      <div style="color: white; margin-right: 8px;">
+        Welcome, <span style="font-weight: bold;">{{ user.employee.firstName + ' ' + user.employee.lastName }}</span>!
+      </div>
+      <button mat-flat-button type="button">
+        Log out
+        <mat-icon>logout</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

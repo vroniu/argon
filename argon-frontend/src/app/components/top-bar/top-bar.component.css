@@ -1,0 +1,34 @@
+.bar {
+  width: 100%;
+  height: 50px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: var(--material-primary);
+}
+
+#argon-logo {
+  height: 40px;
+  width: auto;
+  padding: 5px;
+  filter: invert(100%) sepia(3%) saturate(196%) hue-rotate(86deg) brightness(116%) contrast(100%);
+}
+
+#menu-button {
+  height: 100%;
+  color: white;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding-left: 8px;
+}
+
+#user-info {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+a {
+  display: flex;
+  justify-content: center;
+}

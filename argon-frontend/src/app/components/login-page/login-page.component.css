@@ -1,0 +1,16 @@
+.form {
+  width: 100%;
+  max-width: 600px;
+}
+
+.center {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: revert;
+  padding: 8px;
+}
