@@ -21,7 +21,7 @@ public class Organization {
     @OneToMany(mappedBy = "organization")
     private List<Project> projects;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="organization2employee",
             joinColumns = @JoinColumn(name = "organization_id"),

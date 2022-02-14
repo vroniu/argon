@@ -6,9 +6,11 @@ import src.argon.argon.dto.ProjectDTO;
 import src.argon.argon.mapper.ProjectMapper;
 import src.argon.argon.repository.ProjectRepository;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProjectService {
 
     @Autowired

@@ -13,10 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import src.argon.argon.dto.UserDTO;
 import src.argon.argon.mapper.UserMapper;
-import src.argon.argon.security.models.AuthenticationRequest;
-import src.argon.argon.security.models.AuthenticationResponse;
-import src.argon.argon.security.models.RegistrationRequest;
-import src.argon.argon.security.models.User;
+import src.argon.argon.security.models.*;
 import src.argon.argon.security.service.JWTUtilService;
 import src.argon.argon.security.service.UserService;
 import src.argon.argon.utils.StringUtils;
@@ -33,17 +30,14 @@ public class AuthenticationController {
     @Autowired
     JWTUtilService jwtUtilService;
 
-    @Autowired
-    UserMapper userMapper;
-
     @PostMapping("/login")
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(authenticationRequest.getUsername(), authenticationRequest.getPassword())
             );
         } catch (BadCredentialsException e) {
-            throw new Exception("Incorrect username or password", e);
+            return ResponseEntity.badRequest().body(new JsonResponse("BAD_CREDENTIALS", "Incorrect username or password"));
         }
         final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtUtilService.generateToken(userDetails);
@@ -51,40 +45,40 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<String> createAccount(@RequestBody RegistrationRequest registrationRequest) {
+    public ResponseEntity<JsonResponse> createAccount(@RequestBody RegistrationRequest registrationRequest) {
         if (StringUtils.isNullOrEmpty(registrationRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("Username not provided");
+            return ResponseEntity.badRequest().body(new JsonResponse("NO_USERNAME", "Username not provided"));
         }
         if (userService.userExists(registrationRequest.getUsername())) {
-            return ResponseEntity.badRequest().body("User with that username already exists");
+            return ResponseEntity.badRequest().body(new JsonResponse("USERNAME_TAKEN","User with that username already exists"));
         }
 
         if (StringUtils.isNullOrEmpty(registrationRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Email not provided");
+            return ResponseEntity.badRequest().body(new JsonResponse("NO_EMAIL","Email not provided"));
         }
         if (!StringUtils.validEmail(registrationRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Invalid email");
+            return ResponseEntity.badRequest().body(new JsonResponse("INVALID_EMAIL", "Invalid email"));
 
         }
         if (userService.emailTaken(registrationRequest.getEmail())) {
-            return ResponseEntity.badRequest().body("Email already in use");
+            return ResponseEntity.badRequest().body(new JsonResponse("EMAIL_TAKEN","Email already in use"));
         }
 
         if (StringUtils.isNullOrEmpty(registrationRequest.getPassword())) {
-            return ResponseEntity.badRequest().body("Password not provided");
+            return ResponseEntity.badRequest().body(new JsonResponse("NO_PASSWORD","Password not provided"));
         }
         if (!StringUtils.validPassword(registrationRequest.getPassword())) {
-            return ResponseEntity.badRequest().body("Password must be at least 8 characters long and contain at least one digit");
+            return ResponseEntity.badRequest().body(new JsonResponse("INVALID_PASSWORD","Invalid password."));
         }
 
         userService.registerUser(registrationRequest);
-        return ResponseEntity.status(201).body("User created successfully");
+        return ResponseEntity.status(201).body(new JsonResponse("SUCCESS", "User created successfully"));
     }
 
     @GetMapping("/user")
     public ResponseEntity<UserDTO> getUserInfo(Authentication authentication) {
-       User user = (User)authentication.getPrincipal();
-       return ResponseEntity.ok(userMapper.toDTO(user));
+       User user = (User) authentication.getPrincipal();
+       return ResponseEntity.ok(userService.getUserById(user.getId()));
     }
 
 }

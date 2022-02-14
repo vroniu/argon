@@ -3,11 +3,13 @@ package src.argon.argon.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import src.argon.argon.dto.EmployeeDTO;
-import src.argon.argon.entity.Employee;
 import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.repository.EmployeeRepository;
 
+import javax.transaction.Transactional;
+
 @Service
+@Transactional
 public class EmployeeService {
 
     @Autowired

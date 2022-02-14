@@ -8,7 +8,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import src.argon.argon.dto.EmployeeDTO;
+import src.argon.argon.dto.UserDTO;
 import src.argon.argon.mapper.EmployeeMapper;
+import src.argon.argon.mapper.UserMapper;
 import src.argon.argon.security.models.RegistrationRequest;
 import src.argon.argon.security.models.User;
 import src.argon.argon.security.repository.RoleRepository;
@@ -34,6 +36,9 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private EmployeeMapper employeeMapper;
+
+    @Autowired
+    private UserMapper userMapper;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -61,6 +66,10 @@ public class UserService implements UserDetailsService {
 
         user = userRepository.save(user);
         return user;
+    }
+
+    public UserDTO getUserById(Long id) {
+        return userMapper.toDTO(userRepository.getById(id));
     }
 
     public boolean userExists(String username) {

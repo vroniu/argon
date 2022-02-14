@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import src.argon.argon.security.filters.JWTRequestFilter;
 import src.argon.argon.security.service.UserService;
@@ -21,6 +22,7 @@ import src.argon.argon.security.service.UserService;
 import javax.servlet.http.HttpServletResponse;
 
 @EnableWebSecurity
+@EnableWebMvc
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -43,6 +45,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .antMatchers("/login").permitAll()
                 .antMatchers("/register").permitAll()
                 .anyRequest().authenticated();
+        http.httpBasic();
+        http.cors();
     }
 
     @Override
@@ -76,6 +80,8 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
+                        .allowedHeaders("*")
+                        .allowedMethods("*")
                         .allowedOrigins("*");
             }
         };
