@@ -36,6 +36,9 @@ public class User implements UserDetails, Serializable {
     @NotNull
     private String password;
 
+    @NotNull
+    private String email;
+
     @OneToOne
     @JoinColumn(name = "employee_id")
     private Employee employee;
@@ -101,5 +104,13 @@ public class User implements UserDetails, Serializable {
 
     public void setEmployee(Employee employee) {
         this.employee = employee;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 }

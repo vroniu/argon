@@ -52,6 +52,7 @@ public class UserService implements UserDetailsService {
         user.setUsername(registrationRequest.getUsername());
         user.setAuthorities(Collections.singletonList(roleRepository.getUserRole()));
         user.setPassword(passwordEncoder.encode(registrationRequest.getPassword()));
+        user.setEmail(registrationRequest.getEmail());
 
         if (employee != null) {
             employee = employeeService.save(employee);
@@ -64,5 +65,9 @@ public class UserService implements UserDetailsService {
 
     public boolean userExists(String username) {
         return userRepository.findByUsername(username) != null;
+    }
+
+    public boolean emailTaken(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 }
