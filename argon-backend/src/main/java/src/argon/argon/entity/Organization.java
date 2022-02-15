@@ -16,6 +16,7 @@ public class Organization {
     private Long id;
 
     @NotNull
+    @Column(name = "organization_name")
     private String name;
 
     @OneToMany(mappedBy = "organization")

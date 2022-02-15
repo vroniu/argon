@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS employees (
 
 CREATE TABLE IF NOT EXISTS organizations (
     id serial NOT NULL,
-    name VARCHAR NOT NULL,
+    organization_name VARCHAR NOT NULL,
     CONSTRAINT organizations_pkey PRIMARY KEY (id)
 );
 
@@ -16,7 +16,7 @@ ALTER TABLE projects ADD CONSTRAINT projects_organization_fkey FOREIGN KEY (orga
 
 CREATE TABLE IF NOT EXISTS subprojects (
     id serial NOT NULL,
-    name VARCHAR NOT NULL,
+    subproject_name VARCHAR NOT NULL,
     project_id int4 NOT NULL,
     CONSTRAINT subprojects_pkey PRIMARY KEY (id),
     CONSTRAINT subprojects_project_fkey FOREIGN KEY (project_id) REFERENCES public.projects(id)
@@ -26,7 +26,7 @@ CREATE TABLE IF NOT EXISTS worktimes (
     id serial NOT NULL,
     employee_id int4 NOT NULL,
     subproject_id int4 NOT NULL,
-    day TIMESTAMP NOT NULL,
+    worktime_day TIMESTAMP NOT NULL,
     hours SMALLINT NOT NULL,
     comment VARCHAR NULL,
     CONSTRAINT worktimes_pkey PRIMARY KEY (id),

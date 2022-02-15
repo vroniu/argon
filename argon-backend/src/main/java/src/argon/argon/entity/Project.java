@@ -16,6 +16,7 @@ public class Project {
     private Long id;
 
     @NotNull
+    @Column(name = "project_name")
     private String name;
 
     @ManyToOne

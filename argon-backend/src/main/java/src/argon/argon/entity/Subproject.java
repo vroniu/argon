@@ -16,6 +16,7 @@ public class Subproject {
     private Long id;
 
     @NotNull
+    @Column(name = "subproject_name")
     private String name;
 
     @ManyToOne

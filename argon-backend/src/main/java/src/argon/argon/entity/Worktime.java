@@ -24,6 +24,7 @@ public class Worktime {
     private Subproject subproject;
 
     @NotNull
+    @Column(name = "worktime_day")
     private Date day;
 
     @NotNull
