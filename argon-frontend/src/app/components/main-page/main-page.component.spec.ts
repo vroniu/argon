@@ -1,6 +1,13 @@
+import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MainPageComponent } from './main-page.component';
+
+@Component({ selector: 'arg-top-bar', template: '' })
+class TopBarStubComponent {
+  @Input() displayMenu = true;
+  @Input() displayUserInfo = true;
+}
 
 describe('MainPageComponent', () => {
   let component: MainPageComponent;
@@ -8,7 +15,10 @@ describe('MainPageComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ MainPageComponent ]
+      declarations: [
+        MainPageComponent,
+        TopBarStubComponent
+      ]
     })
     .compileComponents();
   });

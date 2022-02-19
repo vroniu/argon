@@ -16,7 +16,7 @@ export class AuthService {
   private static REGISTER_URL = environment.apiUrl + 'register';
   private static USER_INFO_URL = environment.apiUrl + 'user';
 
-  private currentUser: Observable<User>;
+  public currentUser: Observable<User>;
   private currentUserSubject: BehaviorSubject<User>;
 
   constructor(private http: HttpClient) {
@@ -31,6 +31,7 @@ export class AuthService {
         this.storeToken(token.jwt);
         this.http.get<any>(AuthService.USER_INFO_URL).subscribe((userInfo) => {
           localStorage.setItem('user', JSON.stringify(userInfo));
+          this.currentUserSubject.next(userInfo);
         });
       }),
       mapTo(true),

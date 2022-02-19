@@ -9,15 +9,14 @@ import { AuthService } from '../services/auth.service';
   providedIn: 'root'
 })
 export class JWTInterceptor implements HttpInterceptor {
-  private static URL_EXCEPTIONS = [
-    environment.apiUrl + 'login',
-    environment.apiUrl + 'register'
-  ]
+  private URL_EXCEPTIONS: string[] = [];
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {
+    this.URL_EXCEPTIONS = environment.jwtExceptionUrls;
+  }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    if (JWTInterceptor.URL_EXCEPTIONS.some((exceptionUrl) => exceptionUrl === req.url)) {
+    if (this.URL_EXCEPTIONS.some((exceptionUrl) => exceptionUrl === req.url)) {
       return next.handle(req);
     }
     const token = this.authService.getToken();

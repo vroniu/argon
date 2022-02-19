@@ -12,7 +12,7 @@ import { ErrorInterceptor } from './interceptors/error.interceptor';
     AuthGuard,
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: JWTInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
   ],
 })
 export class AuthModule {}

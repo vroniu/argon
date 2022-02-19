@@ -14,13 +14,19 @@ export class ErrorInterceptor implements HttpInterceptor {
       () => {},
       (err: any) => {
         if (err instanceof HttpErrorResponse) {
-          if (err.status !== 401) {
+          if (err.status === 401) {
+            // TODO - use toastService to notify why user has been loged out
+          } else {
             return;
           }
-          this.authService.logOut();
-          location.reload();
         }
       }
-    ))
+      ))
+    }
+
+  reloadPage(): void {
+    this.authService.logOut();
+    window.location.reload();
   }
 }
+

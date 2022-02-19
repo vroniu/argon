@@ -1,16 +1,94 @@
+import { LoginRequest } from './../models/login.model';
+import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
+import { environment } from '../../../environments/environment';
 import { TestBed } from '@angular/core/testing';
+import { User } from 'src/app/models/user.model';
 
 import { AuthService } from './auth.service';
+import { HttpClient } from '@angular/common/http';
+import { of } from 'rxjs';
 
 describe('AuthService', () => {
   let service: AuthService;
+  let httpClient: HttpClient;
+  let httpTestingController: HttpTestingController;
+
+  const testToken = 'jwt.token';
+  const testUserData: User = {
+    id: 1,
+    username: 'testuser',
+    email: 'mail@mail.com',
+    employee: {
+      id: 1,
+      firstName: 'John',
+      lastName: 'Doe'
+    }
+  };
 
   beforeEach(() => {
-    TestBed.configureTestingModule({});
+    TestBed.configureTestingModule({
+      imports: [HttpClientTestingModule]
+    });
+    localStorage.clear();
     service = TestBed.inject(AuthService);
+    httpClient = TestBed.inject(HttpClient);
+    httpTestingController = TestBed.inject(HttpTestingController);
   });
 
   it('should be created', () => {
     expect(service).toBeTruthy();
   });
+
+  it('should store token value ', () => {
+    service.storeToken(testToken);
+    expect(localStorage.getItem('jwt')).toEqual(testToken);
+  });
+
+  it('should return stored token', () => {
+    localStorage.setItem('jwt', testToken);
+    expect(service.getToken()).toEqual(testToken);
+  });
+
+  it('should delete stored token', () => {
+    localStorage.setItem('jwt', testToken);
+    service.deleteToken();
+    expect(localStorage.getItem('jwt')).toBeFalsy();
+  });
+
+  it('should return true and store the token and user info when loggin in with valid data', () => {
+    const testLogin: LoginRequest = {
+      username: 'username',
+      password: 'password1'
+    };
+
+    // spy on get request to the /user endpoint
+    let userInfoRequestSpy = spyOn(httpClient, 'get').and.returnValue(of(testUserData));
+
+    service.login(testLogin).subscribe((loggedIn) => {
+      expect(loggedIn).toBeTruthy();
+      expect(service.getToken()).toEqual('jwt.token_from_backend');
+      userInfoRequestSpy.calls.mostRecent().returnValue.subscribe(() => {
+        expect(service.getCurrentUser()).toEqual(testUserData);
+      });
+    });
+
+    const loginRequest = httpTestingController.expectOne(environment.apiUrl + 'login');
+    expect(loginRequest.request.method).toEqual('POST');
+    loginRequest.flush({
+      jwt: 'jwt.token_from_backend'
+    });
+
+    httpTestingController.verify();
+  });
+
+  it('should delete token and user from storage and return null user', () => {
+    localStorage.setItem('user', JSON.stringify(testUserData));
+    localStorage.setItem('jwt', 'jwt.token');
+
+    service.logOut();
+
+    expect(localStorage.getItem('user')).toBeFalsy();
+    expect(localStorage.getItem('jwt')).toBeFalsy();
+    expect(service.getCurrentUser()).toBeFalsy();
+  })
 });
