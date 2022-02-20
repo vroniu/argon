@@ -35,10 +35,11 @@ export class LoginPageComponent implements OnInit {
     if (this.loginForm.valid) {
       this.authService.login(this.loginRequest).subscribe(
         (response) => {
-          if (response) {
-            this.router.navigate(['/main']);
-          } else {
-            this.toastService.addErrorToast('Something went wrong.');
+          this.router.navigate(['/main']);
+        },
+        (error) => {
+          if (error.status === 400) {
+            this.toastService.addErrorToast(error.error.description);
           }
         }
       );
@@ -54,10 +55,8 @@ export class LoginPageComponent implements OnInit {
           this.selectedTab = 0;
         },
         (error) => {
-          if (error.error && error.error.status) {
+          if (error.error && error.status === 400) {
             this.toastService.addErrorToast(error.error.description);
-          } else {
-            this.toastService.addErrorToast('Something went wrong');
           }
         }
       );
@@ -65,12 +64,13 @@ export class LoginPageComponent implements OnInit {
   }
 
   validEmail() {
-    const re = /\S+@\S+\.\S+/;
+    const re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(this.registerRequest.email);
   }
 
   validPasswordStrenght() {
-    return this.registerRequest.password.match(/^(?=.*\d)[0-9a-zA-Z!@#&()-_{}:;',?/*~$^+=<>]{8,}$/);
+    const re = /^(?=.*\d)[0-9a-zA-Z!@#&()-_{}:;',?/*~$^+=<>]{8,}$/;
+    return re.test(this.registerRequest.password);
   }
 
   validPasswordsMatch() {

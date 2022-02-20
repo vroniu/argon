@@ -1,3 +1,4 @@
+import { RegistrationRequest } from './../models/register.model';
 import { LoginRequest } from './../models/login.model';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { environment } from '../../../environments/environment';
@@ -39,29 +40,27 @@ describe('AuthService', () => {
     expect(service).toBeTruthy();
   });
 
-  it('should store token value ', () => {
+  it('storeToken should store token value ', () => {
     service.storeToken(testToken);
     expect(localStorage.getItem('jwt')).toEqual(testToken);
   });
 
-  it('should return stored token', () => {
+  it('getToken should return stored token', () => {
     localStorage.setItem('jwt', testToken);
     expect(service.getToken()).toEqual(testToken);
   });
 
-  it('should delete stored token', () => {
+  it('deleteToken should delete stored token', () => {
     localStorage.setItem('jwt', testToken);
     service.deleteToken();
     expect(localStorage.getItem('jwt')).toBeFalsy();
   });
 
-  it('should return true and store the token and user info when loggin in with valid data', () => {
+  it('login should return true and store the token and user info when loggin in with valid data', () => {
     const testLogin: LoginRequest = {
       username: 'username',
       password: 'password1'
     };
-
-    // spy on get request to the /user endpoint
     let userInfoRequestSpy = spyOn(httpClient, 'get').and.returnValue(of(testUserData));
 
     service.login(testLogin).subscribe((loggedIn) => {
@@ -81,7 +80,37 @@ describe('AuthService', () => {
     httpTestingController.verify();
   });
 
-  it('should delete token and user from storage and return null user', () => {
+  it('login should throw error when loggin in with invalid data', () => {
+    const badCredentialsResponse = {
+      status: 'BAD_CREDENTIALS',
+      description: 'Incorrect username or password'
+    };
+    const testLogin: LoginRequest = {
+      username: 'invalid_username',
+      password: 'invalid_password'
+    };
+
+    service.login(testLogin).subscribe(
+      () => {},
+      (error) => {
+        expect(error.error).toEqual(badCredentialsResponse);
+      }
+    );
+
+    const loginRequest = httpTestingController.expectOne(environment.apiUrl + 'login');
+    expect(loginRequest.request.method).toEqual('POST');
+    loginRequest.flush(
+      badCredentialsResponse,
+      {
+        status: 400,
+        statusText: 'Bad request'
+      }
+    );
+
+    httpTestingController.verify();
+  });
+
+  it('logOut should delete token and user from storage and return null user', () => {
     localStorage.setItem('user', JSON.stringify(testUserData));
     localStorage.setItem('jwt', 'jwt.token');
 
@@ -90,5 +119,63 @@ describe('AuthService', () => {
     expect(localStorage.getItem('user')).toBeFalsy();
     expect(localStorage.getItem('jwt')).toBeFalsy();
     expect(service.getCurrentUser()).toBeFalsy();
-  })
+  });
+
+  it('register should return observable when registering with valid data', () => {
+    const testRegister: RegistrationRequest = {
+      username: 'username',
+      password: 'password1',
+      email: 'mail@mail.com',
+      employee: {
+        firstName: 'John',
+        lastName: 'Doe'
+      }
+    };
+    const registerResponse = {
+      status: 'SUCCESS',
+      description: 'User created successfully'
+    };
+
+    service.register(testRegister).subscribe((registered) => {
+      expect(registered).toBeTruthy();
+    });
+
+    const registerRequest = httpTestingController.expectOne(environment.apiUrl + 'register');
+    expect(registerRequest.request.method).toEqual('POST');
+    registerRequest.flush(registerResponse);
+
+    httpTestingController.verify();
+  });
+
+  it('register should throw error when registering with invalid data', () => {
+    const testRegister: RegistrationRequest = {
+      username: 'username',
+      password: 'password1',
+      email: 'mail@mail.com',
+      employee: {
+        firstName: 'John',
+        lastName: 'Doe'
+      }
+    };
+    const registerResponse = {
+      status: 'INVALID_REQUEST',
+      description: 'The request is invalid'
+    };
+
+    service.register(testRegister).subscribe(
+      () => {},
+      (error) => {
+        expect(error.error).toEqual(registerResponse);
+      }
+    );
+
+    const registerRequest = httpTestingController.expectOne(environment.apiUrl + 'register');
+    expect(registerRequest.request.method).toEqual('POST');
+    registerRequest.flush(registerResponse, {
+      status: 400,
+      statusText: 'Bad request'
+    });
+
+    httpTestingController.verify();
+  });
 });

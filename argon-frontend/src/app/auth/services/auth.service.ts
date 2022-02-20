@@ -24,7 +24,7 @@ export class AuthService {
     this.currentUser = this.currentUserSubject.asObservable();
   }
 
-  login(login: LoginRequest): Observable<boolean> {
+  login(login: LoginRequest): Observable<any> {
     return this.http.post<any>(AuthService.LOGIN_URL, login)
     .pipe(
       tap(token => {
@@ -36,8 +36,9 @@ export class AuthService {
       }),
       mapTo(true),
       catchError(error => {
-        return of(false);
-      }));
+        throw error;
+      })
+    );
   }
 
   register(register: RegistrationRequest): Observable<any> {

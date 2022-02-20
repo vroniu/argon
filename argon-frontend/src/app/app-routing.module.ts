@@ -6,7 +6,7 @@ import { LandingPageComponent } from './components/landing-page/landing-page.com
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [
+export const routes: Routes = [
   { path: '', component: LandingPageComponent },
   { path: 'login', component: LoginPageComponent },
   { path: 'main', component: MainPageComponent, canActivate: [AuthGuard] },

@@ -4,7 +4,7 @@
     <mat-tab-group [(selectedIndex)]="selectedTab">
       <mat-tab label="Login">
         <h1>Log in</h1>
-        <form (ngSubmit)="onLoginSubmit()" #loginForm="ngForm">
+        <form (ngSubmit)="onLoginSubmit()" id="login-form" #loginForm="ngForm">
           <mat-form-field>
             <mat-label>Username</mat-label>
             <input id="username" name="username" [(ngModel)]="loginRequest.username" #username="ngModel" matInput required>
@@ -12,27 +12,27 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Password</mat-label>
-            <input name="password" [(ngModel)]="loginRequest.password" #password="ngModel" matInput [type]="hideLoginPassword ? 'password' : 'text'" required>
-            <button type="button" mat-icon-button matSuffix (click)="hideLoginPassword = !hideLoginPassword"
+            <input name="password" id="password" [(ngModel)]="loginRequest.password" #password="ngModel" matInput [type]="hideLoginPassword ? 'password' : 'text'" required>
+            <button id="password-toggle" type="button" mat-icon-button matSuffix (click)="hideLoginPassword = !hideLoginPassword"
               [attr.aria-label]="'hideLoginPassword password'" [attr.aria-pressed]="hideLoginPassword">
               <mat-icon>{{hideLoginPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
             <mat-hint class="hint-warn" *ngIf="password.touched && password.invalid">Password is required.</mat-hint>
           </mat-form-field>
-          <button type="submit" mat-raised-button color="primary">Log in</button>
+          <button id="login-submit" type="submit" mat-raised-button color="primary">Log in</button>
         </form>
       </mat-tab>
       <mat-tab label="Register">
         <h1>Create account</h1>
-        <form (ngSubmit)="onRegisterSubmit()" #registerForm="ngForm">
+        <form (ngSubmit)="onRegisterSubmit()" id="register-form" #registerForm="ngForm">
           <mat-form-field>
             <mat-label>Username</mat-label>
-            <input name="username-register" [(ngModel)]="registerRequest.username" #usernameRegister="ngModel" matInput required>
+            <input id="username-register" name="username-register" [(ngModel)]="registerRequest.username" #usernameRegister="ngModel" matInput required>
             <mat-hint class="hint-warn" *ngIf="usernameRegister.touched && usernameRegister.invalid">Username is required.</mat-hint>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Email</mat-label>
-            <input type="email" name="email" [(ngModel)]="registerRequest.email" #email="ngModel" matInput required>
+            <input id="email" type="email" name="email" [(ngModel)]="registerRequest.email" #email="ngModel" matInput required>
             <mat-hint class="hint-warn">
               <div *ngIf="email.touched && email.invalid">Email is required.</div>
               <div *ngIf="email.touched && !email.invalid && !validEmail()">Invalid email format.</div>
@@ -40,17 +40,17 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>First name</mat-label>
-            <input matInput name="firstName" [(ngModel)]="registerRequest.employee.firstName" #firstName="ngModel" required>
-            <mat-hint class="hit-warn" *ngIf="firstName.touched && firstName.invalid">First name is required.</mat-hint>
+            <input id="first-name" name="firstName" [(ngModel)]="registerRequest.employee.firstName" #firstName="ngModel" matInput required>
+            <mat-hint class="hint-warn" *ngIf="firstName.touched && firstName.invalid">First name is required.</mat-hint>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Last name</mat-label>
-            <input matInput name="lastName" [(ngModel)]="registerRequest.employee.lastName" #lastName="ngModel" required>
-            <mat-hint class="hit-warn" *ngIf="lastName.touched && lastName.invalid">Last name is required.</mat-hint>
+            <input id="last-name" name="lastName" [(ngModel)]="registerRequest.employee.lastName" #lastName="ngModel" matInput required>
+            <mat-hint class="hint-warn" *ngIf="lastName.touched && lastName.invalid">Last name is required.</mat-hint>
           </mat-form-field>
           <mat-form-field>
             <mat-label>Password</mat-label>
-            <input matInput name="password-register" [(ngModel)]="registerRequest.password" #passwordRegister="ngModel" [type]="hideRegisterPassword ? 'password' : 'text'" required>
+            <input matInput id="password-register" name="password-register" [(ngModel)]="registerRequest.password" #passwordRegister="ngModel" [type]="hideRegisterPassword ? 'password' : 'text'" required>
             <button type="button" mat-icon-button matSuffix (click)="hideRegisterPassword = !hideRegisterPassword"
               [attr.aria-label]="'hideRegisterPassword password'" [attr.aria-pressed]="hideRegisterPassword">
               <mat-icon>{{hideRegisterPassword ? 'visibility_off' : 'visibility'}}</mat-icon>
@@ -62,10 +62,10 @@
           </mat-form-field>
           <mat-form-field>
             <mat-label>Confirm password</mat-label>
-            <input name="passwordCfirm" [(ngModel)]="passwordConfirm" #passwordCfirm="ngModel" matInput type="password" required>
-            <mat-hint class="hint-warn" *ngIf="password.touched && passwordCfirm.touched && !validPasswordsMatch()">Passwords do not match.</mat-hint>
+            <input id="password-confirm" name="passwordCfirm" [(ngModel)]="passwordConfirm" #passwordCfirm="ngModel" matInput type="password" required>
+            <mat-hint class="hint-warn" *ngIf="passwordRegister.touched && passwordCfirm.touched && !validPasswordsMatch()">Passwords do not match.</mat-hint>
           </mat-form-field>
-          <button mat-raised-button type="submit" color="primary">Create account</button>
+          <button id="register-submit" mat-raised-button type="submit" color="primary">Create account</button>
         </form>
       </mat-tab>
     </mat-tab-group>
