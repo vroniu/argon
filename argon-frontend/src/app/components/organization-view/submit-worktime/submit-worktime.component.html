@@ -1,0 +1,13 @@
+<div id="submit-worktime">
+  <arg-worktime-form
+    [projects]="projects"
+    (worktimeSaved)="onWorktimeSave($event)"
+  ></arg-worktime-form>
+  <div id="worktimes-list">
+    <arg-worktime-table
+      [worktimes]="todayWorktimes"
+      (onWorktimeDelete)="onWorktimeDelete($event)"
+      (onWorktimeEdit)="onWorktimeEdit($event)"
+    ></arg-worktime-table>
+  </div>
+</div>

@@ -1,6 +1,7 @@
+import { Router } from '@angular/router';
 import { User } from 'src/app/models/user.model';
 import { AuthService } from './../../auth/services/auth.service';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'arg-top-bar',
@@ -10,9 +11,10 @@ import { Component, Input, OnInit } from '@angular/core';
 export class TopBarComponent implements OnInit {
   @Input() displayMenu = true;
   @Input() displayUserInfo = true;
+  @Output() menuButtonPressed = new EventEmitter<any>();
   user: User | null;
 
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.displayUserInfo) {
@@ -20,4 +22,12 @@ export class TopBarComponent implements OnInit {
     }
   }
 
+  onMenuButtonClick() {
+    this.menuButtonPressed.emit();
+  }
+
+  onLogOutButtonClick() {
+    this.authService.logOut();
+    this.router.navigate(['/']);
+  }
 }

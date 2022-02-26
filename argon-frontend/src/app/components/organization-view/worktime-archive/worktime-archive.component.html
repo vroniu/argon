@@ -1,0 +1,23 @@
+<div id="worktime-archive">
+  <div>
+    <form (ngSubmit)="getWorktimesAtRange()">
+      <mat-form-field>
+        <mat-label>Date range</mat-label>
+        <mat-date-range-input [rangePicker]="picker">
+          <input id="start-date" name="start-date" [(ngModel)]="rangeStart" matStartDate placeholder="Start date" required>
+          <input id="end-date" name="end-date" [(ngModel)]="rangeEnd" matEndDate placeholder="End date" required>
+        </mat-date-range-input>
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-date-range-picker #picker></mat-date-range-picker>
+      </mat-form-field>
+      <button type="submit" mat-raised-button color="primary">Get worktimes</button>
+    </form>
+  </div>
+  <div id="worktimes-list">
+    <arg-worktime-table
+      [worktimes]="worktimes"
+      (onWorktimeDelete)="onWorktimeDelete($event)"
+      (onWorktimeEdit)="onWorktimeEdit($event)"
+    ></arg-worktime-table>
+  </div>
+</div>

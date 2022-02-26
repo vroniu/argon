@@ -1,0 +1,28 @@
+<div id="manage-projects">
+  <mat-tree id="project-tree" [dataSource]="projectTree" [treeControl]="treeControl">
+    <mat-tree-node *matTreeNodeDef="let node" matTreeNodePadding matTreeNodePaddingIndent="30">
+        <div class="tree-item subproject">
+          <div class="ellipsis">{{node.name}}</div>
+          <div class="button-container">
+            <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="removeNode(node, true)"><mat-icon>delete</mat-icon></button>
+          </div>
+        </div>
+      </mat-tree-node>
+      <mat-tree-node *matTreeNodeDef="let node;when: hasChild" matTreeNodePadding>
+        <div class="tree-item">
+          <button mat-icon-button matTreeNodeToggle [attr.aria-label]="'Toggle ' + node.name">
+            <mat-icon class="mat-icon-rtl-mirror">
+              {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+            </mat-icon>
+          </button>
+          <div class="ellipsis">{{node.name}}</div>
+          <div class="button-container">
+          <button mat-icon-button><mat-icon>add</mat-icon></button>
+          <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="removeNode(node, false)"><mat-icon>delete</mat-icon></button>
+        </div>
+      </div>
+    </mat-tree-node>
+  </mat-tree>
+</div>

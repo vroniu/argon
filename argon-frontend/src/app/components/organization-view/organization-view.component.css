@@ -1,0 +1,48 @@
+h1 {
+  display: flex;
+}
+
+.cards-container {
+  display: grid;
+  column-gap: 8px;
+  row-gap: 8px;
+  grid-template-rows: repeat(3, auto);
+}
+
+@media (min-width: 1000px) {
+  .cards-container {
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: 80vh;
+  }
+
+  .card {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+  }
+}
+
+.card {
+  padding: 16px;
+  border: 1px solid #d3d3d3;
+  border-radius: 4px;
+}
+
+.card-content {
+  flex-grow: 1;
+  flex-basis: 0;
+}
+
+#organization-info {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  row-gap: 8px;
+}
+
+#organization-info > .label {
+  font-weight: bold;
+}
+
+#leave-button {
+  grid-column: 1 / 3;
+}

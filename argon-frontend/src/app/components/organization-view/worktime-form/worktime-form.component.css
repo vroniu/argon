@@ -1,0 +1,18 @@
+#slider-holder > mat-label {
+  margin: 0px 8px 0px 8px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#hours-slider {
+  width: 100%;
+}
+
+#button-container {
+  display: flex;
+  column-gap: 16px;
+}
+
+#button-container > button {
+  width: 100%;
+}

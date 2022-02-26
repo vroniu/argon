@@ -1,0 +1,6 @@
+<div class="organization" matRipple (click)="onOrganizationCardClicked()">
+  <div id="logo">
+      <mat-icon [inline]="true">{{organization.addOrganizationCard ? 'add' : 'business'}}</mat-icon>
+  </div>
+  <div id="name">{{ organization.name }}</div>
+</div>

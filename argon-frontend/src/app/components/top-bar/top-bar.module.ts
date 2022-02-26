@@ -5,10 +5,11 @@ import { TopBarComponent } from './top-bar.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatButtonModule } from '@angular/material/button';
+import { SharedModule } from 'src/app/shared.module';
 
 @NgModule({
-  declarations: [TopBarComponent],
-  imports: [ CommonModule, AuthModule, MatIconModule, MatButtonModule, AppRoutingModule ],
+  declarations: [ TopBarComponent ],
+  imports: [ CommonModule, SharedModule, AuthModule ],
   exports: [ TopBarComponent ],
   providers: [],
 })

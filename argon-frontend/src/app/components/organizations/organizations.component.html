@@ -1,0 +1,23 @@
+<h1>Organizations</h1>
+<div class="main-content">
+  <mat-card>
+    <p class="card-title">Owned organizations</p>
+    <div class="organization-grid">
+        <arg-organization
+          *ngFor="let ownedOrganization of ownedOrganizations"
+          [organization]="ownedOrganization"
+          (onOrganizationClicked)="onOrganizationClicked(ownedOrganization, true)"
+        ></arg-organization>
+    </div>
+  </mat-card>
+  <mat-card>
+    <p class="card-title">Joined organizations</p>
+    <div class="organization-grid">
+      <arg-organization
+        *ngFor="let ownedOrganization of ownedOrganizations"
+        [organization]="ownedOrganization"
+        (onOrganizationClicked)="onOrganizationClicked(ownedOrganization, false)"
+      ></arg-organization>
+  </div>
+  </mat-card>
+</div>

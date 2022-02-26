@@ -18,7 +18,7 @@ import { LoginPageComponent } from './components/login-page/login-page.component
 import { FormsModule } from '@angular/forms';
 import { AuthModule } from './auth/auth.module';
 import { TopBarModule } from './components/top-bar/top-bar.module';
-import { AuthGuard } from './auth/guards/auth.guard';
+import { SharedModule } from './shared.module';
 
 @NgModule({
   declarations: [
@@ -28,24 +28,11 @@ import { AuthGuard } from './auth/guards/auth.guard';
     LoginPageComponent,
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatIconModule,
-    MatButtonModule,
-    MatTabsModule,
-    FormsModule,
-    HttpClientModule,
-    MatSnackBarModule,
+    SharedModule,
     MainPageModule,
     TopBarModule,
-    AuthModule,
   ],
-  providers: [
-    { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

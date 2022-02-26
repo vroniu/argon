@@ -4,6 +4,7 @@ html, body {height: 100%; }
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
   --material-primary: #673ab7;
+  --light-grey: #f5f5f5;
 }
 
 form {
@@ -32,4 +33,45 @@ form {
 .toast-info {
   background-color: #ffbb33;
   color: white;
+}
+
+.dialogButton {
+  width: 125px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: revert;
+  padding: 8px;
+}
+
+.card-title {
+  font-weight: bold;
+  font-size: 1.2em;
+  margin-bottom: 8px;
+}
+
+.page-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.back-button {
+  border-radius: 50%;
+  font-size: 50px;
+  cursor: pointer;
+}
+
+.back-button:hover {
+  color: var(--material-primary)
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
 }

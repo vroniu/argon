@@ -17,6 +17,7 @@ export class ErrorInterceptor implements HttpInterceptor {
           // TODO - global 500 error interceptor
           if (err.status === 401) {
             // TODO - use toastService to notify why user has been loged out
+            this.reloadPage();
           } else {
             return;
           }

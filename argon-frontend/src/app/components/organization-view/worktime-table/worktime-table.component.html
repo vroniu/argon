@@ -1,0 +1,32 @@
+<div class="worktime-list">
+  <ng-container *ngIf="worktimes?.length !== 0; else noWorktimes">
+    <mat-card class="worktime-card" *ngFor="let worktime of worktimes">
+      <div class="worktime-info">
+        <div class="label">Day</div>
+        <div class="ellipsis">{{worktime.day | date: 'd MMM y (EEEE)' }}</div>
+        <div class="label">Project</div>
+        <div class="ellipsis">
+          {{worktime.subproject.projectName}}
+          >
+          {{worktime.subproject.name}}
+        </div>
+        <div class="label">Hours</div>
+        <div class="ellipsis">{{worktime.hours}}</div>
+        <ng-container *ngIf="worktime.comment">
+          <div class="label">Notes</div>
+          <div class="ellipsis">{{worktime.comment}}</div>
+        </ng-container>
+      </div>
+      <div class="worktime-buttons">
+        <button mat-raised-button color="primary" (click)="editWorktime(worktime)">Edit</button>
+        <button mat-raised-button color="warn" (click)="deleteWorktime(worktime)">Delete</button>
+      </div>
+    </mat-card>
+  </ng-container>
+  <ng-template #noWorktimes>
+    <div id="no-data-container">
+      <mat-icon id="no-data-icon" [inline]="true">block</mat-icon>
+      <p>No worktimes found.</p>
+    </div>
+  </ng-template>
+</div>

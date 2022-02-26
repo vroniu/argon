@@ -1,0 +1,43 @@
+<form id="worktime-form" #worktimeForm="ngForm" (ngSubmit)="onWorktimeSubmit()">
+  <mat-form-field>
+    <mat-label>Day</mat-label>
+    <input id="day" name="day" matInput [matDatepicker]="picker" [(ngModel)]="worktime.day" required>
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Project</mat-label>
+    <mat-select [(value)]="selectedProject">
+      <mat-option *ngFor="let project of projects" [value]="project">
+        {{ project.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Subproject</mat-label>
+    <mat-select [(value)]="selectedSubprojet">
+      <mat-option *ngFor="let subproject of selectedProject?.subprojects" [value]="subproject">
+        {{ subproject.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div id="slider-holder">
+    <mat-label>
+      <div>Hours</div>
+      <div style="font-weight: bold;">{{worktime.hours}}</div>
+    </mat-label>
+    <mat-slider
+      id="hours-slider" name="hours-slider"
+      min="1" max="10" step="0.5" value="6"
+      [(ngModel)]="worktime.hours" thumbLabel
+    ></mat-slider>
+  </div>
+  <mat-form-field>
+    <mat-label>Notes</mat-label>
+    <textarea matInput id="comment" name="comment" [(ngModel)]="worktime.comment"></textarea>
+  </mat-form-field>
+  <div id="button-container">
+    <button *ngIf="edit" type="button" mat-raised-button (click)="onCancel()">Cancel</button>
+    <button type="submit" mat-raised-button color="primary">Save</button>
+  </div>
+</form>

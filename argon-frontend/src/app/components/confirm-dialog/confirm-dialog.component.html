@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>{{ data.header }}</h1>
+<div mat-dialog-content style="overflow: hidden !important;">
+  <p>
+    {{ data.content }}
+  </p>
+</div>
+<div mat-dialog-actions>
+  <button class="dialogButton" mat-raised-button (click)="onClose(false)">
+    {{ data.cancelButton ? data.cancelButton : 'Cancel' }}
+  </button>
+  <button class="dialogButton" mat-raised-button color="primary" cdkFocusInitial (click)="onClose(true)">
+    {{ data.confirmButton ? data.confirmButton : 'Confirm' }}
+  </button>
+</div>
+

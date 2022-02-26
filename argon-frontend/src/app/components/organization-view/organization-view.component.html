@@ -1,0 +1,64 @@
+<h1>
+  <div matRipple class="page-title back-button" routerLink="..">
+    <mat-icon inline="true">chevron_left</mat-icon>
+  </div>
+  <div class="page-title">
+    {{ organization?.name }}
+  </div>
+</h1>
+<div class="cards-container">
+  <ng-container *ngIf="view === 'owner'; else organizationEmployeeView">
+    <div class="card">
+      <div class="card-title">Manage worktimes</div>
+      <div class="card-content">
+        <arg-manage-worktimes></arg-manage-worktimes>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Manage projects</div>
+      <div class="card-content">
+        <arg-manage-projects
+          [organization]="organizationSubject.asObservable()"
+        ></arg-manage-projects>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Manage organization</div>
+      <div class="card-content">
+        <arg-manage-organization></arg-manage-organization>
+      </div>
+    </div>
+  </ng-container>
+  <ng-template #organizationEmployeeView>
+    <div class="card mat-elevation-z2">
+      <div class="card-title">Report worktime</div>
+      <div class="card-content">
+        <arg-submit-worktime
+          [organization]="organizationSubject.asObservable()"
+        ></arg-submit-worktime>
+      </div>
+    </div>
+    <div class="card mat-elevation-z2">
+      <div class="card-title">Worktimes archive</div>
+      <div class="card-content">
+        <arg-worktime-archive
+          [organization]="organizationSubject.asObservable()"
+        ></arg-worktime-archive>
+      </div>
+    </div>
+    <div class="card mat-elevation-z2">
+      <div class="card-title">Organization info</div>
+      <div class="card-content">
+        <div id="organization-info">
+          <div class="label">Organization name</div>
+          <div class="ellipsis">{{organization?.name}}</div>
+          <div class="label">Your position</div>
+          <div class="ellipsis">{{employeeInfo?.position}}</div>
+          <div class="label">Joined at</div>
+          <div class="ellipsis">{{employeeInfo?.joinedDate | date: 'd MMM y (EEEE)'}}</div>
+          <button id="leave-button" mat-raised-button color="warn" (click)="leaveOrganization()">Leave organization</button>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -1,0 +1,39 @@
+.worktime-list {
+  height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.worktime-card {
+  display: flex;
+  background-color: var(--light-grey);
+}
+
+.worktime-info {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+
+.worktime-buttons {
+  display: flex;
+  flex-direction: column;
+  row-gap: 8px;
+}
+
+.label {
+  font-weight: bold;
+}
+
+#no-data-container {
+  color: grey;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#no-data-icon {
+  font-size: 30px;
+}
