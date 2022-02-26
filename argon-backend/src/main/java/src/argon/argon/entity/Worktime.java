@@ -3,7 +3,7 @@ package src.argon.argon.entity;
 import com.sun.istack.NotNull;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
@@ -25,7 +25,7 @@ public class Worktime {
 
     @NotNull
     @Column(name = "worktime_day")
-    private Date day;
+    private LocalDate day;
 
     @NotNull
     private Short hours;
@@ -56,11 +56,11 @@ public class Worktime {
         this.subproject = subproject;
     }
 
-    public Date getDay() {
+    public LocalDate getDay() {
         return day;
     }
 
-    public void setDay(Date day) {
+    public void setDay(LocalDate day) {
         this.day = day;
     }
 

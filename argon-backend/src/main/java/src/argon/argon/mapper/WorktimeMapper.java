@@ -11,11 +11,8 @@ public interface WorktimeMapper extends EntityMapper<Worktime, WorktimeDTO> {
 
     @Mapping(source = "employee.id", target = "employeeId")
     @Mapping(target = "employeeName", expression = "java(worktime.getEmployee().getFirstName() + \" \" + worktime.getEmployee().getLastName())")
-    @Mapping(source = "subproject.id", target = "subprojectId")
-    @Mapping(source = "subproject.name", target = "subprojectName")
     WorktimeDTO toDTO(Worktime worktime);
 
-    @Mapping(source = "subprojectId", target = "subproject")
     @Mapping(source = "employeeId", target = "employee")
     Worktime toEntity(WorktimeDTO worktimeDTO);
 

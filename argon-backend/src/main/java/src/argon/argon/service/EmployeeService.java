@@ -21,4 +21,8 @@ public class EmployeeService {
     public EmployeeDTO save(EmployeeDTO employeeDTO) {
         return employeeMapper.toDTO(employeeRepository.save(employeeMapper.toEntity(employeeDTO)));
     }
+
+    public EmployeeDTO getEmployee(Long employeeId) {
+        return employeeMapper.toDTO(employeeRepository.getById(employeeId));
+    }
 }

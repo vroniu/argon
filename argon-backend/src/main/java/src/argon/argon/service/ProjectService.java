@@ -3,6 +3,7 @@ package src.argon.argon.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import src.argon.argon.dto.ProjectDTO;
+import src.argon.argon.entity.Project;
 import src.argon.argon.mapper.ProjectMapper;
 import src.argon.argon.repository.ProjectRepository;
 
@@ -18,16 +19,13 @@ public class ProjectService {
     @Autowired
     ProjectMapper projectMapper;
 
-    public List<ProjectDTO> findAllProjects() {
-        return projectMapper.toDTO(projectRepository.findAll());
+    public List<ProjectDTO> getProjectsForOrganization(Long organizationId) {
+        return projectMapper.toDTO(projectRepository.findAllByOrganizationId(organizationId));
     }
 
-    public ProjectDTO findOne(Long id) {
-        return projectMapper.toDTO(projectRepository.findById(id).orElse(null));
-    }
-
-    public ProjectDTO save(ProjectDTO project) {
-        return projectMapper.toDTO(projectRepository.save(projectMapper.toEntity(project)));
+    public ProjectDTO save(ProjectDTO projectDTO) {
+        Project project = projectMapper.toEntity(projectDTO);
+        return projectMapper.toDTO(projectRepository.save(project));
     }
 
     public void delete(Long id) {

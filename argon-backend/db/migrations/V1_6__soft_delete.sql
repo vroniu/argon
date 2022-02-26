@@ -1,0 +1,2 @@
+ALTER TABLE projects ADD COLUMN deleted BOOLEAN;
+ALTER TABLE subprojects ADD COLUMN deleted BOOLEAN;

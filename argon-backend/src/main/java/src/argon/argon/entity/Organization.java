@@ -1,6 +1,7 @@
 package src.argon.argon.entity;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.Filter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -20,6 +21,7 @@ public class Organization {
     private String name;
 
     @OneToMany(mappedBy = "organization")
+    @Filter(name = "deletedProjectsFilter", condition = "deleted IS NULL")
     private List<Project> projects;
 
     @ManyToMany(fetch = FetchType.EAGER)

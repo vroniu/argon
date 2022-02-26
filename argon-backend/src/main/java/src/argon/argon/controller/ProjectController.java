@@ -15,33 +15,19 @@ public class ProjectController {
     @Autowired
     ProjectService projectService;
 
-    @GetMapping("")
-    public List<ProjectDTO> getAllProjects() {
-        return projectService.findAllProjects();
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<ProjectDTO> getProjectById(@PathVariable Long id) {
-        ProjectDTO project = projectService.findOne(id);
-        if (project != null) {
-            return ResponseEntity.ok(project);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
+    @GetMapping("/organization/{organizationId}")
+    public List<ProjectDTO> getProjectsForOrganization(@PathVariable Long organizationId) {
+        return projectService.getProjectsForOrganization(organizationId);
     }
 
     @PostMapping("")
-    public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO project) {
-        if (project.getId() != null) {
-            return ResponseEntity.badRequest().build();
-        } else {
-            return ResponseEntity.ok(projectService.save(project));
-        }
+    public ResponseEntity<ProjectDTO> createProject(@RequestBody ProjectDTO projectDTO) {
+        return ResponseEntity.status(201).body(projectService.save(projectDTO));
     }
 
     @PutMapping("")
-    public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO project) {
-        return ResponseEntity.ok(projectService.save(project));
+    public ResponseEntity<ProjectDTO> updateProject(@RequestBody ProjectDTO projectDTO) {
+        return ResponseEntity.status(200).body(projectService.save(projectDTO));
     }
 
     @DeleteMapping("/{id}")

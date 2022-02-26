@@ -1,13 +1,17 @@
 package src.argon.argon.entity;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "projects")
+@SQLDelete(sql = "UPDATE projects SET deleted = true WHERE id = ?")
 public class Project {
 
     @Id
@@ -24,7 +28,11 @@ public class Project {
     private Organization organization;
 
     @OneToMany(mappedBy = "project")
+    @Filter(name = "deletedSubprojectsFilter", condition = "deleted IS NULL")
     List<Subproject> subprojects;
+
+    @Column
+    Boolean deleted;
 
     public Long getId() {
         return id;
@@ -48,6 +56,22 @@ public class Project {
 
     public void setOrganization(Organization organization) {
         this.organization = organization;
+    }
+
+    public List<Subproject> getSubprojects() {
+        return subprojects;
+    }
+
+    public void setSubprojects(List<Subproject> subprojects) {
+        this.subprojects = subprojects;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override

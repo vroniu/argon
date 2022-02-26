@@ -23,15 +23,6 @@ public class Employee {
     @Column(name = "last_name")
     private String lastName;
 
-    @ManyToMany(mappedBy = "employees")
-    private List<Organization> organizations;
-
-    @OneToMany(mappedBy = "employee")
-    private List<Worktime> worktimes;
-
-    @ManyToMany(mappedBy = "owners")
-    private List<Organization> ownedOrganizations;
-
     public Long getId() {
         return id;
     }
@@ -54,30 +45,6 @@ public class Employee {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public List<Organization> getOrganizations() {
-        return organizations;
-    }
-
-    public void setOrganizations(List<Organization> organizations) {
-        this.organizations = organizations;
-    }
-
-    public List<Worktime> getWorktimes() {
-        return worktimes;
-    }
-
-    public void setWorktimes(List<Worktime> worktimes) {
-        this.worktimes = worktimes;
-    }
-
-    public List<Organization> getOwnedOrganizations() {
-        return ownedOrganizations;
-    }
-
-    public void setOwnedOrganizations(List<Organization> ownedOrganizations) {
-        this.ownedOrganizations = ownedOrganizations;
     }
 
     @Override

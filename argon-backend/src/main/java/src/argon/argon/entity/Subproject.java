@@ -1,13 +1,17 @@
 package src.argon.argon.entity;
 
 import com.sun.istack.NotNull;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 import java.util.List;
 import java.util.Objects;
 
 @Entity
 @Table(name = "subprojects")
+@SQLDelete(sql = "UPDATE subprojects SET deleted = true WHERE id = ?")
 public class Subproject {
 
     @Id

@@ -1,15 +1,14 @@
 package src.argon.argon.dto;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class WorktimeDTO implements Serializable {
     private Long id;
     private Long employeeId;
     private String employeeName;
-    private Long subprojectId;
-    private String subprojectName;
-    private Date day;
+    private SubprojectDTO subproject;
+    private LocalDate day;
     private Short hours;
     private String comment;
 
@@ -37,27 +36,19 @@ public class WorktimeDTO implements Serializable {
         this.employeeName = employeeName;
     }
 
-    public Long getSubprojectId() {
-        return subprojectId;
+    public SubprojectDTO getSubproject() {
+        return subproject;
     }
 
-    public void setSubprojectId(Long subprojectId) {
-        this.subprojectId = subprojectId;
+    public void setSubproject(SubprojectDTO subproject) {
+        this.subproject = subproject;
     }
 
-    public String getSubprojectName() {
-        return subprojectName;
-    }
-
-    public void setSubprojectName(String subprojectName) {
-        this.subprojectName = subprojectName;
-    }
-
-    public Date getDay() {
+    public LocalDate getDay() {
         return day;
     }
 
-    public void setDay(Date day) {
+    public void setDay(LocalDate day) {
         this.day = day;
     }
 

@@ -1,9 +1,59 @@
 package src.argon.argon.controller;
 
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import src.argon.argon.dto.WorktimeDTO;
+import src.argon.argon.security.models.User;
+import src.argon.argon.service.WorktimeService;
+
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 @RestController
 @RequestMapping("worktimes")
 public class WorktimeController {
+
+    final static private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+    @Autowired
+    WorktimeService worktimeService;
+
+    @GetMapping("/day")
+    public List<WorktimeDTO> getWorktimesAtDay(@RequestParam String day, @RequestParam Long organizationId, Authentication authentication) {
+        LocalDate dateDay = LocalDate.parse(day, dtf);
+        User user = (User) authentication.getPrincipal();
+        return worktimeService.getWorktimesAtDayForUser(dateDay, user.getEmployee().getId(), organizationId);
+    }
+
+    @GetMapping("/range")
+    public List<WorktimeDTO> getWorktimesAtDateRange(@RequestParam String rangeStart, @RequestParam String rangeEnd, @RequestParam Long organizationId, Authentication authentication) {
+        LocalDate dateStart = LocalDate.parse(rangeStart, dtf);
+        LocalDate dateEnd = LocalDate.parse(rangeEnd, dtf);
+        User user = (User) authentication.getPrincipal();
+        return worktimeService.getWorktimesAtDateRangeForUser(dateStart, dateEnd, user.getEmployee().getId(), organizationId);
+    }
+
+    @PostMapping("")
+    public ResponseEntity<WorktimeDTO> createWorktime(@RequestBody WorktimeDTO worktimeDTO, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        worktimeDTO.setEmployeeId(user.getEmployee().getId());
+        WorktimeDTO result = worktimeService.save(worktimeDTO);
+        return ResponseEntity.status(201).body(result);
+    }
+
+    @PutMapping("")
+    public ResponseEntity<WorktimeDTO> updateWorktime(@RequestBody WorktimeDTO worktimeDTO) {
+        WorktimeDTO result = worktimeService.save(worktimeDTO);
+        return ResponseEntity.status(201).body(result);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteWorktime(@PathVariable Long id) {
+        worktimeService.deleteWorktime(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
