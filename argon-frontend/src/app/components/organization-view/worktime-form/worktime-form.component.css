@@ -16,3 +16,7 @@
 #button-container > button {
   width: 100%;
 }
+
+.deleted {
+  color: red !important;
+}

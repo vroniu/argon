@@ -19,6 +19,8 @@ export class WorktimeFormComponent implements OnInit {
   @Output() worktimeSaved = new EventEmitter<Worktime>();
   @ViewChild('worktimeForm') worktimeForm: FormGroup;
 
+  availableProjects: Project[];
+  availableSubprojects: Map<number, Subproject[]> = new Map();
   selectedProject: Project | null;
   selectedSubprojet: Subproject | null;
 
@@ -26,14 +28,32 @@ export class WorktimeFormComponent implements OnInit {
 
   ngOnInit(): void {
     if (this.edit) {
+      this.setProjects(this.projects);
+      const worktimeProject = this.projects.find(project => this.worktime.subproject.projectId === project.id);
+      const worktimeSubproject = worktimeProject.subprojects.find(subproject => subproject.id === this.worktime.subproject.id);
+      if (worktimeProject.deleted) {
+        this.availableProjects.push(worktimeProject);
+        this.availableSubprojects.set(worktimeProject.id, worktimeProject.subprojects);
+      } else if (worktimeSubproject.deleted) {
+        this.availableSubprojects.set(worktimeProject.id, [...this.availableSubprojects.get(worktimeProject.id), worktimeSubproject]);
+      }
       this.worktime.day = new Date(this.worktime.day);
-      this.selectedSubprojet = this.projects
-        .map(project => project.subprojects).reduce((arr, elem) => arr.concat(elem), [])
-        .find(subproject => subproject.id === this.worktime.subproject.id);
-      this.selectedProject = this.projects.find(project => project.id === this.selectedSubprojet.projectId);
+      this.selectedProject = this.availableProjects.find(project => project.id === worktimeProject.id);
+      this.selectedSubprojet = this.availableSubprojects.get(this.selectedProject.id)
+        .find(subproject => subproject.id === worktimeSubproject.id)
     } else {
       this.resetWorktimeForm();
     }
+  }
+
+  setProjects(projects: Project[]) {
+    this.availableProjects = projects.filter(project => project.deleted !== true);
+    this.availableProjects.forEach(project => {
+      this.availableSubprojects.set(
+        project.id,
+        project.subprojects.filter(subproject => subproject.deleted !== true)
+      );
+    });
   }
 
   onWorktimeSubmit() {

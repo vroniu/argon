@@ -1,3 +1,4 @@
+import { WorktimeFormComponent } from './../worktime-form/worktime-form.component';
 import { EditWorktimeDialogComponent } from './../edit-worktime-dialog/edit-worktime-dialog.component';
 import { ConfirmDialogComponent, ConfirmDialogData } from './../../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -17,7 +18,7 @@ import { Organization } from 'src/app/models/organization.model';
   styleUrls: ['./submit-worktime.component.css']
 })
 export class SubmitWorktimeComponent implements OnInit, OnDestroy {
-  @ViewChild('worktimeForm') worktimeForm: FormGroup;
+  @ViewChild('worktimeForm') worktimeForm: WorktimeFormComponent;
   @Input() organization: Observable<Organization>;
   organizationSubscription: Subscription;
   worktimesUpdatedSubscription: Subscription;
@@ -40,6 +41,7 @@ export class SubmitWorktimeComponent implements OnInit, OnDestroy {
     this.organizationSubscription = this.organization.subscribe(organization => {
       this.organizationId = organization.id;
       this.projects = organization.projects;
+      this.worktimeForm.setProjects(this.projects);
       this.getWorktimesForToday();
     });
     this.worktimesUpdatedSubscription = this.worktimeService.getWorktimesUpdated().subscribe(

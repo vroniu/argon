@@ -4,8 +4,8 @@
         <div class="tree-item subproject">
           <div class="ellipsis">{{node.name}}</div>
           <div class="button-container">
-            <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
-            <button mat-icon-button color="warn" (click)="removeNode(node, true)"><mat-icon>delete</mat-icon></button>
+            <button mat-icon-button color="primary" (click)="editProject(node, true)"><mat-icon>edit</mat-icon></button>
+            <button mat-icon-button color="warn" (click)="removeProject(node, true)"><mat-icon>delete</mat-icon></button>
           </div>
         </div>
       </mat-tree-node>
@@ -18,11 +18,12 @@
           </button>
           <div class="ellipsis">{{node.name}}</div>
           <div class="button-container">
-          <button mat-icon-button><mat-icon>add</mat-icon></button>
-          <button mat-icon-button color="primary"><mat-icon>edit</mat-icon></button>
-          <button mat-icon-button color="warn" (click)="removeNode(node, false)"><mat-icon>delete</mat-icon></button>
+          <button mat-icon-button><mat-icon (click)="addProject(node, true)">add</mat-icon></button>
+          <button mat-icon-button color="primary" (click)="editProject(node, false)"><mat-icon>edit</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="removeProject(node, false)"><mat-icon>delete</mat-icon></button>
         </div>
       </div>
     </mat-tree-node>
   </mat-tree>
+  <button mat-raised-button color="primary" (click)="addProject(null, false)">Add project</button>
 </div>

@@ -3,4 +3,5 @@ export class Subproject {
   name: string;
   projectId: number;
   projectName: string;
+  deleted?: boolean;
 }

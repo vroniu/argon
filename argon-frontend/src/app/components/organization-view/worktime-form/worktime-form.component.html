@@ -8,7 +8,7 @@
   <mat-form-field>
     <mat-label>Project</mat-label>
     <mat-select [(value)]="selectedProject">
-      <mat-option *ngFor="let project of projects" [value]="project">
+      <mat-option *ngFor="let project of availableProjects" [value]="project" [ngClass]="{'deleted': project.deleted}">
         {{ project.name }}
       </mat-option>
     </mat-select>
@@ -16,7 +16,7 @@
   <mat-form-field>
     <mat-label>Subproject</mat-label>
     <mat-select [(value)]="selectedSubprojet">
-      <mat-option *ngFor="let subproject of selectedProject?.subprojects" [value]="subproject">
+      <mat-option *ngFor="let subproject of availableSubprojects.get(selectedProject?.id)" [value]="subproject" [ngClass]="{'deleted': subproject.deleted}">
         {{ subproject.name }}
       </mat-option>
     </mat-select>

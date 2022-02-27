@@ -14,6 +14,7 @@ import { ManageWorktimesComponent } from './manage-worktimes/manage-worktimes.co
 import { ManageProjectsComponent } from './manage-projects/manage-projects.component';
 import { ManageOrganizationComponent } from './manage-organization/manage-organization.component';
 import {MatTreeModule} from '@angular/material/tree';
+import { ProjectDialogComponent } from './manage-projects/project-dialog/project-dialog.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import {MatTreeModule} from '@angular/material/tree';
     ManageWorktimesComponent,
     ManageProjectsComponent,
     ManageOrganizationComponent,
+    ProjectDialogComponent,
   ],
   imports: [
     CommonModule,

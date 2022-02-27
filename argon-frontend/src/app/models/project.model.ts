@@ -5,5 +5,6 @@ export class Project {
   name: string;
   organizationId: number;
   organizationName: number;
+  deleted?: boolean;
   subprojects?: Subproject[];
 }

@@ -1,3 +1,4 @@
+import { ProjectDialogComponent } from './project-dialog/project-dialog.component';
 import { ProjectService } from './../../../services/project.service';
 import { ConfirmDialogComponent } from './../../confirm-dialog/confirm-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
@@ -44,12 +45,12 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
     node => node.expandable,
     node => this.getNodeChildren(node),
   );
-  getNodeChildren = (node: Project | Subproject ): Subproject[] => {
+  getNodeChildren = (node: Project | Subproject): Subproject[] => {
     if (node instanceof Subproject) {
       return [];
     }
     if (node.subprojects) {
-      return node.subprojects;
+      return node.subprojects.filter(subproject => subproject.deleted !== true);
     }
     return [];
   }
@@ -62,7 +63,7 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.organizationSubscription = this.organization.subscribe(organization => {
       this.organizationId = organization.id;
-      this.projectTree.data = organization.projects;
+      this.createTreeData();
     });
   }
 
@@ -70,7 +71,13 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
     this.organizationSubscription.unsubscribe();
   }
 
-  removeNode(node: ProjectTreeNode, isChild: boolean) {
+  createTreeData() {
+    this.projectService.getProjectsForOrganization(this.organizationId).subscribe(
+      (projects) => this.projectTree.data = projects.filter(project => project.deleted !== true).sort((a, b) => a.id - b.id)
+    );
+  }
+
+  removeProject(node: ProjectTreeNode, isChild: boolean) {
     if (isChild) {
       const dialogRef = this.dialog.open(ConfirmDialogComponent, {
         data: {
@@ -80,7 +87,9 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
       });
       dialogRef.afterClosed().subscribe((response) => {
         if (response) {
-          this.projectService.deleteSubproject(node.originalData.id).subscribe();
+          this.projectService.deleteSubproject(node.originalData.id).subscribe(
+              () => this.createTreeData()
+            );
         }
       });
     } else {
@@ -94,14 +103,81 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
       });
       dialogRef.afterClosed().subscribe((response) => {
         if (response) {
-          this.projectService.deleteProject(node.originalData.id).subscribe();
+          this.projectService.deleteProject(node.originalData.id).subscribe(
+            () => this.createTreeData()
+          );
         }
       });
     }
   }
 
-  editNode(node: ProjectTreeNode) {
+  editProject(node: ProjectTreeNode, isChild: boolean) {
+    if (isChild) {
+      const dialogRef = this.dialog.open(ProjectDialogComponent, {
+        data: {
+          type: 'subproject',
+          edit: true,
+          project: node.originalData
+        }
+      });
+      dialogRef.afterClosed().subscribe((response) => {
+        if (response && response.save) {
+          this.projectService.updateSubproject(response.data).subscribe(
+            () => this.createTreeData()
+          );
+        }
+      });
+    } else {
+      const dialogRef = this.dialog.open(ProjectDialogComponent, {
+        data: {
+          type: 'project',
+          edit: true,
+          project: node.originalData
+        }
+      });
+      dialogRef.afterClosed().subscribe((response) => {
+        if (response && response.save) {
+          this.projectService.updateProject(response.data).subscribe(
+            () => this.createTreeData()
+          );
+        }
+      });
+    }
+  }
 
+  addProject(node: ProjectTreeNode, isChild: boolean) {
+    if (isChild) {
+      const dialogRef = this.dialog.open(ProjectDialogComponent, {
+        data: {
+          type: 'subproject',
+          edit: false,
+        }
+      });
+      dialogRef.afterClosed().subscribe((response) => {
+        if (response && response.save) {
+          console.log(node.originalData);
+          response.data.projectId = (node.originalData as Project).id;
+          this.projectService.createSubproject(response.data).subscribe(
+            () => this.createTreeData()
+          );
+        }
+      });
+    } else {
+      const dialogRef = this.dialog.open(ProjectDialogComponent, {
+        data: {
+          type: 'project',
+          edit: false,
+        }
+      });
+      dialogRef.afterClosed().subscribe((response) => {
+        if (response && response.save) {
+          response.data.organizationId = this.organizationId;
+          this.projectService.createProject(response.data).subscribe(
+            () => this.createTreeData()
+          );
+        }
+      });
+    }
   }
 
 }

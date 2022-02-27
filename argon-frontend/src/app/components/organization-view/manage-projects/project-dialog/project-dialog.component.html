@@ -1,0 +1,13 @@
+<h1 mat-dialog-title>{{ header }}</h1>
+<div mat-dialog-content>
+  <form>
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input id="project-name" name="project-name" [(ngModel)]="project.name" matInput required>
+    </mat-form-field>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button class="dialogButton" mat-raised-button (click)="onClose(false)">Cancel</button>
+  <button class="dialogButton" mat-raised-button color="primary" cdkFocusInitial (click)="onClose(true)">Save</button>
+</div>
