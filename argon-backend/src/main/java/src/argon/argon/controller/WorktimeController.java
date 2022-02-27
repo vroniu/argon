@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import src.argon.argon.dto.WorktimeDTO;
+import src.argon.argon.security.models.JsonResponse;
 import src.argon.argon.security.models.User;
 import src.argon.argon.service.WorktimeService;
 
@@ -37,11 +38,15 @@ public class WorktimeController {
     }
 
     @PostMapping("")
-    public ResponseEntity<WorktimeDTO> createWorktime(@RequestBody WorktimeDTO worktimeDTO, Authentication authentication) {
+    public ResponseEntity<?> createWorktime(@RequestBody WorktimeDTO worktimeDTO, Authentication authentication) {
         User user = (User) authentication.getPrincipal();
         worktimeDTO.setEmployeeId(user.getEmployee().getId());
-        WorktimeDTO result = worktimeService.save(worktimeDTO);
-        return ResponseEntity.status(201).body(result);
+        try {
+            WorktimeDTO result = worktimeService.save(worktimeDTO);
+            return ResponseEntity.status(201).body(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new JsonResponse("PROJECT_DELETED", e.getMessage()));
+        }
     }
 
     @PutMapping("")

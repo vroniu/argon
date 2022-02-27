@@ -9,6 +9,7 @@ public class ProjectDTO implements Serializable {
     private Long organizationId;
     private String organizationName;
     private List<SubprojectDTO> subprojects;
+    private Boolean deleted;
 
     public Long getId() {
         return id;
@@ -48,5 +49,13 @@ public class ProjectDTO implements Serializable {
 
     public void setSubprojects(List<SubprojectDTO> subprojects) {
         this.subprojects = subprojects;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 }

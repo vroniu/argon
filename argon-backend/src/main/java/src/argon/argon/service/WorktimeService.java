@@ -24,8 +24,11 @@ public class WorktimeService {
     @Autowired
     WorktimeMapper worktimeMapper;
 
-    public WorktimeDTO save(WorktimeDTO worktimeDto) {
+    public WorktimeDTO save(WorktimeDTO worktimeDto) throws IllegalArgumentException {
         Worktime worktime = worktimeMapper.toEntity(worktimeDto);
+        if (worktime.getId() != null && (worktime.getSubproject().getDeleted() || worktime.getSubproject().getProject().getDeleted())) {
+            throw new IllegalArgumentException("Cant assign worktime to a deleted subproject/project");
+        }
         return worktimeMapper.toDTO(worktimeRepository.save(worktime));
     }
 

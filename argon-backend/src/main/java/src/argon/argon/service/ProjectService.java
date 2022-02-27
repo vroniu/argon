@@ -6,6 +6,7 @@ import src.argon.argon.dto.ProjectDTO;
 import src.argon.argon.entity.Project;
 import src.argon.argon.mapper.ProjectMapper;
 import src.argon.argon.repository.ProjectRepository;
+import src.argon.argon.repository.SubprojectRepository;
 
 import javax.transaction.Transactional;
 import java.util.List;
@@ -18,6 +19,8 @@ public class ProjectService {
     ProjectRepository projectRepository;
     @Autowired
     ProjectMapper projectMapper;
+    @Autowired
+    SubprojectRepository subprojectRepository;
 
     public List<ProjectDTO> getProjectsForOrganization(Long organizationId) {
         return projectMapper.toDTO(projectRepository.findAllByOrganizationId(organizationId));
@@ -29,6 +32,8 @@ public class ProjectService {
     }
 
     public void delete(Long id) {
+        Project project = projectRepository.getById(id);
+        subprojectRepository.deleteAll(project.getSubprojects());
         projectRepository.deleteById(id);
     }
 }

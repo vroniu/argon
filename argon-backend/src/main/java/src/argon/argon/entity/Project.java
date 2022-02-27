@@ -28,7 +28,6 @@ public class Project {
     private Organization organization;
 
     @OneToMany(mappedBy = "project")
-    @Filter(name = "deletedSubprojectsFilter", condition = "deleted IS NULL")
     List<Subproject> subprojects;
 
     @Column

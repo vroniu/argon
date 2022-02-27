@@ -30,6 +30,9 @@ public class Subproject {
     @OneToMany(mappedBy = "subproject")
     private List<Worktime> worktimes;
 
+    @Column
+    Boolean deleted;
+
     public Long getId() {
         return id;
     }
@@ -60,6 +63,14 @@ public class Subproject {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    public Boolean getDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
     }
 
     @Override
