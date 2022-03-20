@@ -7,7 +7,7 @@
   </div>
 </h1>
 <div class="cards-container">
-  <ng-container *ngIf="view === 'owner'; else organizationEmployeeView">
+  <ng-container id="owner-view" *ngIf="view === 'owner'; else organizationEmployeeView">
     <div class="card">
       <div class="card-title">Manage worktimes</div>
       <div class="card-content">
@@ -29,7 +29,7 @@
       </div>
     </div>
   </ng-container>
-  <ng-template #organizationEmployeeView>
+  <ng-template id="employee-view" #organizationEmployeeView>
     <div class="card mat-elevation-z2">
       <div class="card-title">Report worktime</div>
       <div class="card-content">

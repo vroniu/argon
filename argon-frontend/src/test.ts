@@ -23,3 +23,9 @@ getTestBed().initTestEnvironment(
 const context = require.context('./', true, /\.spec\.ts$/);
 // And load the modules.
 context.keys().map(context);
+
+console.warn = (message: string) => {
+  if (!message.includes('MockLocationStrategy')) {
+    console.log('WARN: ' + message);
+  }
+};

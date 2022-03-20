@@ -1,4 +1,5 @@
 import { RouterTestingModule } from '@angular/router/testing';
+import { MockLocationStrategy } from '@angular/common/testing';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { AuthGuard } from './auth.guard';
 import { User } from 'src/app/models/user.model';
@@ -6,7 +7,7 @@ import { TestBed } from '@angular/core/testing';
 import { ActivatedRouteSnapshot, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from './../services/auth.service';
 import { routes } from 'src/app/app-routing.module';
-import {Location} from '@angular/common';
+import {Location, LocationStrategy} from '@angular/common';
 
 describe('AuthGuard', () => {
   let router: Router;
@@ -22,7 +23,8 @@ describe('AuthGuard', () => {
         RouterTestingModule.withRoutes(routes)
       ],
       providers: [
-        AuthGuard
+        AuthGuard,
+        { provide: LocationStrategy, useClass: MockLocationStrategy },
       ]
     }).compileComponents();
     authService = TestBed.inject(AuthService);

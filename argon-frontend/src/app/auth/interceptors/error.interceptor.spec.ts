@@ -1,4 +1,4 @@
-import { AuthService } from './../services/auth.service';
+import { TestUtils } from './../../../tests/test-utils';
 import { environment } from '../../../environments/environment';
 import { HttpClientTestingModule, HttpTestingController } from '@angular/common/http/testing';
 import { HttpClient, HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -8,7 +8,6 @@ import { ErrorInterceptor } from './error.interceptor';
 describe('ErrorInterceptor', () => {
   let httpClient: HttpClient;
   let httpTestingController: HttpTestingController;
-  let authService: AuthService;
   let errorInterceptor: ErrorInterceptor;
 
   beforeEach(() => {
@@ -22,14 +21,17 @@ describe('ErrorInterceptor', () => {
         }
       ]
     });
+    errorInterceptor = TestUtils.getInterceptorInstance<ErrorInterceptor>(TestBed.inject(HTTP_INTERCEPTORS), ErrorInterceptor);
     httpClient = TestBed.inject(HttpClient);
     httpTestingController = TestBed.inject(HttpTestingController);
-    authService = TestBed.inject(AuthService);
-    errorInterceptor = TestBed.inject(ErrorInterceptor);
   });
 
   it('should not log out user if authorized', () => {
+    const interceptorSpy = spyOn(errorInterceptor, 'intercept').and.callThrough();
+    const reloadSpy = spyOn(errorInterceptor, 'reloadPage').and.callFake(() => {});
     httpClient.get<any>(environment.apiUrl + 'endpoint').subscribe((response) => {
+      expect(interceptorSpy).toHaveBeenCalled();
+      expect(reloadSpy).not.toHaveBeenCalled();
       expect(response).toBeTruthy();
     });
 
@@ -40,12 +42,14 @@ describe('ErrorInterceptor', () => {
   });
 
   // TODO fix this mf
-  xit('should log out user if unauthorized', () => {
-    errorInterceptor.reloadPage = function() {};
+  it('should log out user if unauthorized', () => {
+    const interceptorSpy = spyOn(errorInterceptor, 'intercept').and.callThrough();
+    const reloadSpy = spyOn(errorInterceptor, 'reloadPage').and.callFake(() => {});
     httpClient.get<any>(environment.apiUrl + 'endpoint').subscribe(
       (response) => { },
       (error) => {
-        expect(errorInterceptor.reloadPage.prototype).toHaveBeenCalled();
+        expect(interceptorSpy).toHaveBeenCalled();
+        expect(reloadSpy).toHaveBeenCalled();
       }
     );
 

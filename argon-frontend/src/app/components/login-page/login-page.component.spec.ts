@@ -11,6 +11,8 @@ import { of, throwError } from 'rxjs';
 import { Router } from '@angular/router';
 import { routes } from 'src/app/app-routing.module';
 import { TestUtils } from 'src/tests/test-utils';
+import { LocationStrategy } from '@angular/common';
+import { MockLocationStrategy } from '@angular/common/testing';
 
 @Component({ selector: 'arg-top-bar', template: '' })
 class TopBarStubComponent {
@@ -34,6 +36,9 @@ describe('LoginPageComponent', () => {
       imports: [
         AppModule,
         RouterTestingModule.withRoutes(routes)
+      ],
+      providers: [
+        { provide: LocationStrategy, useClass: MockLocationStrategy },
       ]
     }).compileComponents();
     fixture = TestBed.createComponent(LoginPageComponent);

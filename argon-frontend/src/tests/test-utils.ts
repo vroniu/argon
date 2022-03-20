@@ -1,3 +1,4 @@
+import { HttpInterceptor } from '@angular/common/http';
 import { ComponentFixture } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -19,5 +20,15 @@ export class TestUtils {
   static clickButton(fixture: ComponentFixture<any>, buttonId: string) {
     let buttonEl: HTMLButtonElement = fixture.debugElement.query(By.css(`#${buttonId}`)).nativeElement;
     buttonEl.click();
+  }
+
+  static getInterceptorInstance<T extends HttpInterceptor>(interceptors: HttpInterceptor[], type: any): T {
+    let searchedInterceptor: HttpInterceptor = null;
+    interceptors.forEach((interceptor: HttpInterceptor) => {
+        if (interceptor instanceof type) {
+            searchedInterceptor = interceptor;
+        }
+    });
+    return searchedInterceptor as T;
   }
 }
