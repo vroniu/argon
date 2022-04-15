@@ -34,8 +34,10 @@ export class LoginPageComponent implements OnInit {
   onLoginSubmit() {
     if (this.loginForm.valid) {
       this.authService.login(this.loginRequest).subscribe(
-        (response) => {
-          this.router.navigate(['/main']);
+        () => {
+          this.authService.currentUser.subscribe(() => {
+            this.router.navigate(['/main/organizations']);
+          });
         },
         (error) => {
           if (error.status === 400) {
