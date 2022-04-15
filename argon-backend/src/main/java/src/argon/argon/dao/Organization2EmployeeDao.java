@@ -13,8 +13,8 @@ import java.util.List;
 public class Organization2EmployeeDao {
     private static final String QUERY_ALL_ORGANIZATION_EMPLOYEES = "SELECT * FROM organization2employee o2e JOIN employees e ON o2e.employee_id = e.id WHERE o2e.organization_id = ?;";
     private static final String QUERY_ORGANIZATION_EMPLOYEE = "SELECT * FROM organization2employee o2e JOIN employees e ON o2e.employee_id = e.id WHERE o2e.organization_id = ? AND o2e.employee_id = ?;";
-    private static final String QUERY_UPDATE_EMPLOYEE_INFO = "UPDATE organization2employee o2e SET position = ?, joined_date = ? WHERE organization_id = ? AND employee_id = ?;";
-    private static final String QUERY_UPDATE_EMPLOYEE_POSITION = "UPDATE organization2employee o2e SET position = ? WHERE organization_id = ? AND employee_id = ?;";
+    private static final String QUERY_UPDATE_EMPLOYEE_INFO = "UPDATE organization2employee o2e SET employee_postion = ?, joined_date = ? WHERE organization_id = ? AND employee_id = ?;";
+    private static final String QUERY_UPDATE_EMPLOYEE_POSITION = "UPDATE organization2employee o2e SET employee_postion = ? WHERE organization_id = ? AND employee_id = ?;";
 
 
     @Autowired
@@ -42,7 +42,7 @@ public class Organization2EmployeeDao {
         model.setFirstName(rs.getString("first_name"));
         model.setLastName(rs.getString("last_name"));
         model.setJoinedDate(rs.getDate("joined_date").toLocalDate());
-        model.setPosition(rs.getString("position"));
+        model.setPosition(rs.getString("employee_postion"));
         return model;
     };
 

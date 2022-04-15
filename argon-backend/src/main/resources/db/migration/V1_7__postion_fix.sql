@@ -1,0 +1,1 @@
+ALTER TABLE organization2employee ADD COLUMN employee_postion VARCHAR;
