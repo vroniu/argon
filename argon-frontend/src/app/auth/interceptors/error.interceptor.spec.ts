@@ -46,8 +46,8 @@ describe('ErrorInterceptor', () => {
     const interceptorSpy = spyOn(errorInterceptor, 'intercept').and.callThrough();
     const reloadSpy = spyOn(errorInterceptor, 'reloadPage').and.callFake(() => {});
     httpClient.get<any>(environment.apiUrl + 'endpoint').subscribe(
-      (response) => { },
-      (error) => {
+      () => { },
+      () => {
         expect(interceptorSpy).toHaveBeenCalled();
         expect(reloadSpy).toHaveBeenCalled();
       }

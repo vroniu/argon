@@ -12,7 +12,7 @@ import { Component } from '@angular/core';
 class ManageWorktimesComponentStub { }
 
 
-fdescribe('OrganizationViewComponent', () => {
+describe('OrganizationViewComponent', () => {
   let component: OrganizationViewComponent;
   let fixture: ComponentFixture<OrganizationViewComponent>;
 
