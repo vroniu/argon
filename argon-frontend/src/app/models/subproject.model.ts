@@ -3,5 +3,6 @@ export class Subproject {
   name: string;
   projectId: number;
   projectName: string;
+  organizationId: number;
   deleted?: boolean;
 }

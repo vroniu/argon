@@ -36,7 +36,7 @@ export class LoginPageComponent implements OnInit {
       this.authService.login(this.loginRequest).subscribe(
         () => {
           this.authService.currentUser.subscribe(() => {
-            this.router.navigate(['/main/organizations']);
+            this.router.navigate(['/main']);
           });
         },
         (error) => {

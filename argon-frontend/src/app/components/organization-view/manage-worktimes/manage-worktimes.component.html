@@ -1,1 +1,36 @@
-<p>manage-worktimes works!</p>
+<div id="manage-worktimes">
+  <form (ngSubmit)="onSearchWorktimes()" #searchWorktimeForm="ngForm">
+    <mat-form-field>
+      <mat-label>Employees</mat-label>
+      <mat-select multiple [(value)]="selectedEmployees" required>
+        <mat-option *ngFor="let employee of employeeList" [value]="employee.id">{{employee.firstName}} {{employee.lastName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Projects</mat-label>
+      <mat-select multiple [(value)]="selectedProjects" (valueChange)="onSelectedProjectsChange($event)">
+        <mat-option *ngFor="let project of projectList" [value]="project.id">{{project.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Subprojects</mat-label>
+      <mat-select multiple [disabled]="selectedProjects.length === 0" [(value)]="selectedSubprojects" required>
+        <mat-option *ngFor="let subproject of availableSubprojectList" [value]="subproject.id">{{subproject.name}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Date range</mat-label>
+      <mat-date-range-input [rangePicker]="picker">
+        <input id="start-date" [(ngModel)]="rangeStart" name="start-date" matStartDate placeholder="Start date" required>
+        <input id="end-date" [(ngModel)]="rangeEnd" name="end-date" matEndDate placeholder="End date" required>
+      </mat-date-range-input>
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-date-range-picker #picker></mat-date-range-picker>
+    </mat-form-field>
+    <button type="submit" mat-raised-button color="primary" [disabled]="searchWorktimeForm.invalid">Search worktimes</button>
+  </form>
+  <arg-worktime-table
+    id="worktimes-list"
+    [worktimes]="worktimes"
+  ></arg-worktime-table>
+</div>

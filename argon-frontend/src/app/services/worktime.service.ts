@@ -35,6 +35,17 @@ export class WorktimeService {
     });
   }
 
+  getFilteredWorktimesForOrganization(rangeStart: Date, rangeEnd: Date, employeeIds: number[], subprojectIds: number[], organizationId: number): Observable<Worktime[]> {
+    return this.http.get<Worktime[]>(`${WorktimeService.WORKTIME_URL}/filter/${organizationId}`, {
+      params: new HttpParams()
+      .set('rangeStart', DateTime.fromJSDate(rangeStart).toFormat('yyyy-MM-dd'))
+      .set('rangeEnd', DateTime.fromJSDate(rangeEnd).toFormat('yyyy-MM-dd'))
+      .set('employeeIds', JSON.stringify(employeeIds))
+      .set('subprojectIds', JSON.stringify(subprojectIds))
+      .set('organizationId', organizationId)
+    });
+  }
+
   createWorktime(worktime: Worktime): Observable<Worktime> {
     this.formatWorktimeDay(worktime);
     return this.http.post<Worktime>(WorktimeService.WORKTIME_URL, worktime)

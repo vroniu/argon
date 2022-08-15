@@ -1,0 +1,13 @@
+#manage-worktimes {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  row-gap: 16px;
+}
+
+#worktimes-list {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 50vh;
+}

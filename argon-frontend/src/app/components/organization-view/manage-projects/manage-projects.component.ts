@@ -87,7 +87,7 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
       });
       dialogRef.afterClosed().subscribe((response) => {
         if (response) {
-          this.projectService.deleteSubproject(node.originalData.id).subscribe(
+          this.projectService.deleteSubproject(node.originalData as Subproject).subscribe(
               () => this.createTreeData()
             );
         }
@@ -103,7 +103,7 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
       });
       dialogRef.afterClosed().subscribe((response) => {
         if (response) {
-          this.projectService.deleteProject(node.originalData.id).subscribe(
+          this.projectService.deleteProject(node.originalData as Project).subscribe(
             () => this.createTreeData()
           );
         }
