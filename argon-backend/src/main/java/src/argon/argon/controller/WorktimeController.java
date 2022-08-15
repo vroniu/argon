@@ -1,16 +1,25 @@
 package src.argon.argon.controller;
 
+import com.google.gson.Gson;
+import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import src.argon.argon.dto.EmployeeDTO;
+import src.argon.argon.dto.OrganizationDTO;
 import src.argon.argon.dto.WorktimeDTO;
+import src.argon.argon.entity.Employee;
+import src.argon.argon.entity.Organization;
+import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.security.models.JsonResponse;
 import src.argon.argon.security.models.User;
+import src.argon.argon.service.OrganizationService;
 import src.argon.argon.service.WorktimeService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -18,9 +27,16 @@ import java.util.List;
 public class WorktimeController {
 
     final static private DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    final static private Gson gson = new Gson();
 
     @Autowired
     WorktimeService worktimeService;
+
+    @Autowired
+    OrganizationService organizationService;
+
+    @Autowired
+    EmployeeMapper employeeMapper;
 
     @GetMapping("/day")
     public List<WorktimeDTO> getWorktimesAtDay(@RequestParam String day, @RequestParam Long organizationId, Authentication authentication) {
@@ -35,6 +51,24 @@ public class WorktimeController {
         LocalDate dateEnd = LocalDate.parse(rangeEnd, dtf);
         User user = (User) authentication.getPrincipal();
         return worktimeService.getWorktimesAtDateRangeForUser(dateStart, dateEnd, user.getEmployee().getId(), organizationId);
+    }
+
+    @GetMapping("/filter/{organizationId}")
+    public List<WorktimeDTO> getFilteredWorktimesForOrganization(@RequestParam String rangeStart, @RequestParam String rangeEnd,
+                                                                 @RequestParam String employeeIds, @RequestParam String subprojectIds,
+                                                                 @PathVariable Long organizationId, Authentication authentication) {
+        OrganizationDTO organization = organizationService.getOrganizationById(organizationId);
+        User user = (User) authentication.getPrincipal();
+        EmployeeDTO employeeDTO = employeeMapper.toDTO(user.getEmployee());
+        if (!organization.getOwners().contains(employeeDTO)) {
+            // TODO check organization ownership
+        }
+        LocalDate dateFrom = LocalDate.parse(rangeStart, dtf);
+        LocalDate dateTo = LocalDate.parse(rangeEnd, dtf);
+        List<Long> employeeIdsList = List.of(gson.fromJson(employeeIds, Long[].class));
+        List<Long> subprojectIdsList = List.of(gson.fromJson(subprojectIds, Long[].class));
+
+        return worktimeService.getWorktimesAtDateRangeForEmployeesInSubprojects(dateFrom, dateTo, employeeIdsList, subprojectIdsList);
     }
 
     @PostMapping("")

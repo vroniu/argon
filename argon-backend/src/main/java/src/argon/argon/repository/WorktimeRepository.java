@@ -13,4 +13,5 @@ public interface WorktimeRepository extends JpaRepository<Worktime, Long> {
             LocalDate startDate, LocalDate endDate,
             Long employeeId, Long subprojectProjectOrganizationId
     );
+    List<Worktime> findByDayBetweenAndEmployeeIdInAndSubprojectIdIn(LocalDate startDate, LocalDate endDate, List<Long> employeeIds, List<Long> subprojectIds);
 }

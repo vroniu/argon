@@ -46,6 +46,12 @@ public class WorktimeService {
         );
     }
 
+    public List<WorktimeDTO> getWorktimesAtDateRangeForEmployeesInSubprojects(LocalDate rangeStart, LocalDate rangeEnd, List<Long> employeeIds, List<Long> subprojectIds) {
+        return worktimeMapper.toDTO(
+                worktimeRepository.findByDayBetweenAndEmployeeIdInAndSubprojectIdIn(rangeStart, rangeEnd, employeeIds, subprojectIds)
+        );
+    }
+
     public void deleteWorktime(Long id) {
         worktimeRepository.deleteById(id);
     }
