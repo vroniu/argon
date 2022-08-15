@@ -1,0 +1,7 @@
+#dialog-content {
+  overflow: hidden !important;
+}
+
+#dialog-buttons {
+  justify-content: center;
+}

@@ -13,12 +13,9 @@ export interface ConfirmDialogData {
   templateUrl: './confirm-dialog.component.html',
   styleUrls: ['./confirm-dialog.component.css']
 })
-export class ConfirmDialogComponent implements OnInit {
+export class ConfirmDialogComponent {
 
-  constructor(private dialogRef: MatDialogRef<ConfirmDialogComponent>, @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData ) { }
-
-  ngOnInit(): void {
-  }
+  constructor(private dialogRef: MatDialogRef<ConfirmDialogComponent, boolean>, @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData ) { }
 
   onClose(confirm: boolean) {
     this.dialogRef.close(confirm);
