@@ -14,18 +14,18 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LandingPageComponent } from './components/landing-page/landing-page.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
-import { LoginPageComponent } from './components/login-page/login-page.component';
 import { FormsModule } from '@angular/forms';
 import { AuthModule } from './auth/auth.module';
 import { TopBarModule } from './components/top-bar/top-bar.module';
 import { SharedModule } from './shared.module';
+import { LoginComponent } from './components/login/login.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PageNotFoundComponent,
     LandingPageComponent,
-    LoginPageComponent,
+    LoginComponent
   ],
   imports: [
     SharedModule,

@@ -1,10 +1,10 @@
-import { ToastService } from './../../services/toast.service';
+import { ToastService } from '../../services/toast.service';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
-import { AppModule } from './../../app.module';
+import { AppModule } from '../../app.module';
 import { ComponentFixture, TestBed, fakeAsync, tick } from '@angular/core/testing';
 
-import { LoginPageComponent } from './login-page.component';
+import { LoginComponent } from './login.component';
 import { Component, Input, DebugElement } from '@angular/core';
 import { AuthService } from 'src/app/auth/services/auth.service';
 import { of, throwError } from 'rxjs';
@@ -20,9 +20,9 @@ class TopBarStubComponent {
   @Input() displayUserInfo = true;
 }
 
-describe('LoginPageComponent', () => {
-  let component: LoginPageComponent;
-  let fixture: ComponentFixture<LoginPageComponent>;
+describe('LoginComponent', () => {
+  let component: LoginComponent;
+  let fixture: ComponentFixture<LoginComponent>;
   let authService: AuthService;
   let router: Router;
   let toastService: ToastService;
@@ -30,7 +30,7 @@ describe('LoginPageComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       declarations: [
-        LoginPageComponent,
+        LoginComponent,
         TopBarStubComponent
       ],
       imports: [
@@ -41,7 +41,7 @@ describe('LoginPageComponent', () => {
         { provide: LocationStrategy, useClass: MockLocationStrategy },
       ]
     }).compileComponents();
-    fixture = TestBed.createComponent(LoginPageComponent);
+    fixture = TestBed.createComponent(LoginComponent);
     authService = TestBed.inject(AuthService);
     router = TestBed.inject(Router);
     toastService = TestBed.inject(ToastService);

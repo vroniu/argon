@@ -1,6 +1,6 @@
-import { ToastService } from './../../services/toast.service';
-import { RegistrationRequest } from './../../auth/models/register.model';
-import { AuthService } from './../../auth/services/auth.service';
+import { ToastService } from '../../services/toast.service';
+import { RegistrationRequest } from '../../auth/models/register.model';
+import { AuthService } from '../../auth/services/auth.service';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { LoginRequest } from '../../auth/models/login.model';
 import { Employee } from 'src/app/models/employee.model';
@@ -8,11 +8,11 @@ import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'arg-login-page',
-  templateUrl: './login-page.component.html',
-  styleUrls: ['./login-page.component.css']
+  selector: 'arg-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css']
 })
-export class LoginPageComponent implements OnInit {
+export class LoginComponent implements OnInit {
   @ViewChild('loginForm') loginForm: FormGroup;
   @ViewChild('registerForm') registerForm: FormGroup;
   hideLoginPassword = true;

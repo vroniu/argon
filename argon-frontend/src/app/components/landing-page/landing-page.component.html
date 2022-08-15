@@ -1,3 +1,27 @@
 <arg-top-bar [displayMenu]="false" [displayUserInfo]="false"></arg-top-bar>
-<h1>Welcome to Argon!</h1>
-<a [routerLink]="['/login']">Login page</a>
+<div class="main-content">
+  <h1>
+    <div class="page-title">
+      Welcome to Argon!
+    </div>
+  </h1>
+  <div class="cards-container">
+    <div class="card">
+      <div class="card-title">What is Argon?</div>
+      <div class="card-content">
+        <p>Argon is an online application, designed for managing organizational units (bussineses, companies, etc), their projects and tasks, and the employees' worktimes.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Features</div>
+      <div class="card-content">
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Log in</div>
+      <div class="card-content">
+        <arg-login></arg-login>
+      </div>
+    </div>
+  </div>
+</div>
