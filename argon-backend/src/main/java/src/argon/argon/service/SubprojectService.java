@@ -7,6 +7,7 @@ import src.argon.argon.dto.SubprojectDTO;
 import src.argon.argon.entity.Project;
 import src.argon.argon.entity.Subproject;
 import src.argon.argon.mapper.SubprojectMapper;
+import src.argon.argon.repository.ProjectRepository;
 import src.argon.argon.repository.SubprojectRepository;
 
 import javax.transaction.Transactional;
@@ -20,9 +21,12 @@ public class SubprojectService {
     SubprojectMapper subprojectMapper;
     @Autowired
     SubprojectRepository subprojectRepository;
+    @Autowired
+    ProjectRepository projectRepository;
 
     public SubprojectDTO save(SubprojectDTO subprojectDTO) {
         Subproject subproject = subprojectMapper.toEntity(subprojectDTO);
+        subproject.setProject(projectRepository.getById(subprojectDTO.getProjectId()));
         return subprojectMapper.toDTO(subprojectRepository.save(subproject));
     }
 

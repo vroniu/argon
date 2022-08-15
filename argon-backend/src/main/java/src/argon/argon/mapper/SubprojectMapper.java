@@ -12,6 +12,7 @@ public interface SubprojectMapper extends EntityMapper<Subproject, SubprojectDTO
 
     @Mapping(source = "project.id", target = "projectId")
     @Mapping(source = "project.name", target = "projectName")
+    @Mapping(source = "project.organization.id", target = "organizationId")
     SubprojectDTO toDTO(Subproject entity);
 
     @Mapping(source = "projectId", target = "project")
