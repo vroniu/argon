@@ -11,6 +11,9 @@ sourceCompatibility = '11'
 
 repositories {
 	mavenCentral()
+	jcenter() {
+		url "https://jcenter.bintray.com/"
+	}
 }
 
 dependencies {
