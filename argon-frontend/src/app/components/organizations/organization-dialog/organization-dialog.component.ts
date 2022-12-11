@@ -1,7 +1,7 @@
 import { FormGroup } from '@angular/forms';
 import { Organization } from 'src/app/models/organization.model';
-import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
   selector: 'arg-organization-dialog',
@@ -12,10 +12,12 @@ export class OrganizationDialogComponent implements OnInit {
   @ViewChild('organizationForm') organizationForm: FormGroup;
   organization: Organization = new Organization();
 
-  constructor(private dialogRef: MatDialogRef<OrganizationDialogComponent>) { }
+  constructor(private dialogRef: MatDialogRef<OrganizationDialogComponent>, @Inject(MAT_DIALOG_DATA) private organizationData: Organization) { }
 
   ngOnInit(): void {
-
+    if (this.organizationData) {
+      this.organization.name = this.organizationData.name;
+    }
   }
 
   onClose(save: boolean) {

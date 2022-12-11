@@ -1,3 +1,5 @@
+import { EmployeeTableComponent } from './manage-organization/employee-table/employee-table.component';
+import { MatIconModule } from '@angular/material/icon';
 import { MatCardModule } from '@angular/material/card';
 import { SharedModule } from 'src/app/shared.module';
 import { OrganizationViewComponent } from './organization-view.component';
@@ -21,6 +23,7 @@ import { ProjectDialogComponent } from './manage-projects/project-dialog/project
     OrganizationViewComponent,
     SubmitWorktimeComponent,
     WorktimeTableComponent,
+    EmployeeTableComponent,
     EditWorktimeDialogComponent,
     WorktimeFormComponent,
     WorktimeArchiveComponent,
@@ -35,7 +38,9 @@ import { ProjectDialogComponent } from './manage-projects/project-dialog/project
     MatCardModule,
     MatDatepickerModule,
     MatSliderModule,
-    MatTreeModule
+    MatTreeModule,
+    MatIconModule,
+    MatCardModule
   ],
   exports: [
     OrganizationViewComponent

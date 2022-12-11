@@ -1,0 +1,34 @@
+#organization-info {
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  row-gap: 8px;
+}
+
+#organization-info > .label {
+  font-weight: bold;
+}
+
+#edit-button {
+  grid-column: 1 / 3;
+}
+
+#manage-organization {
+  display: flex;
+  flex-flow: column;
+  height: 100%;
+
+  row-gap: 16px;
+}
+
+@media (min-width: 1000px) {
+  #employee-table {
+    flex-basis: 0;
+    max-height: none !important;
+  }
+}
+
+#employee-table {
+  flex-grow: 1;
+  overflow-y: auto;
+  max-height: 50vh;
+}

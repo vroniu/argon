@@ -25,6 +25,10 @@ export class OrganizationService {
     return this.http.get<Organization>(`${OrganizationService.ORGANIZATION_URL}/${id}`);
   }
 
+  getOrganizationEmployees(id: number): Observable<Employee[]> {
+    return this.http.get<Employee[]>(`${OrganizationService.ORGANIZATION_URL}/${id}/employees`);
+  }
+
   createOrganization(organization: Organization): Observable<Organization> {
     return this.http.post<Organization>(OrganizationService.ORGANIZATION_URL, organization);
   }

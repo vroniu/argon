@@ -27,7 +27,9 @@
     <div class="card">
       <div class="card-title">Manage organization</div>
       <div class="card-content">
-        <arg-manage-organization></arg-manage-organization>
+        <arg-manage-organization
+          [organization]="organizationSubject.asObservable()"
+        ></arg-manage-organization>
       </div>
     </div>
   </ng-container>

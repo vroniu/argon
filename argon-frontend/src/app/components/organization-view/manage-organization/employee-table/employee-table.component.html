@@ -1,0 +1,26 @@
+<div class="worktime-list">
+  <ng-container *ngIf="employees?.length !== 0; else noemployees">
+    <mat-card class="worktime-card" *ngFor="let employee of employees">
+      <div class="worktime-info">
+        <div class="label">Name</div>
+        <div class="ellipsis">
+          {{employee.firstName}} {{employee.lastName}}
+        </div>
+        <div class="label">Postition</div>
+        <div class="ellipsis">{{employee.position}}</div>
+        <div class="label">Joined</div>
+        <div class="ellipsis">{{employee.joinedDate | date: 'd MMM y (EEEE)' }}</div>
+      </div>
+      <div class="worktime-buttons">
+        <button mat-raised-button color="primary" (click)="editWorktime(employee)">Edit</button>
+        <button mat-raised-button color="warn" (click)="deleteWorktime(employee)">Remove</button>
+      </div>
+    </mat-card>
+  </ng-container>
+  <ng-template #noemployees>
+    <div id="no-data-container">
+      <mat-icon id="no-data-icon" [inline]="true">block</mat-icon>
+      <p>No employees found.</p>
+    </div>
+  </ng-template>
+</div>

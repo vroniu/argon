@@ -1,1 +1,13 @@
-<p>manage-organization works!</p>
+<div id="manage-organization">
+  <div id="organization-info">
+    <div class="label">Organization name</div>
+    <div class="ellipsis">{{organizationInfo?.name}}</div>
+    <button id="edit-button" mat-raised-button color="primary" (click)="editOrganization()">Edit organization</button>
+  </div>
+  <div class="card-title" style="margin-bottom: 0px;">List of employees</div>
+  <arg-employee-table
+    id="employee-table"
+    [employees]="employees"
+  ></arg-employee-table>
+  <button mat-raised-button color="primary" (click)="editOrganization()">Add employee</button>
+</div>
