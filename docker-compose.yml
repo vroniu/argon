@@ -20,6 +20,7 @@ services:
             - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/argon
             - SPRING_DATASOURCE_USERNAME=argon_admin
             - SPRING_DATASOURCE_PASSWORD=password123
+            - ARGON_SECRET=secret123
         ports:
             - 8080:8080
     argon-frontend:
