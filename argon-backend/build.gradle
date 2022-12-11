@@ -43,3 +43,11 @@ test {
 flyway {
 	configFiles = ['flyway.conf']
 }
+
+tasks.register('bootRunDev') {
+	bootRun.configure {
+		systemProperty 'spring.profiles.active', 'dev'
+	}
+}
+
+bootRunDev.finalizedBy bootRun
