@@ -1,8 +1,4 @@
 export const environment = {
-  production: true,
-  apiUrl: 'http://188.68.231.116:8080/',
-  jwtExceptionUrls: [
-    'http://188.68.231.116:8080/login',
-    'http://188.68.231.116:8080/register',
-  ]
+  production: window['env' as any]['production' as any],
+  apiUrl: window['env' as any]['apiUrl' as any],
 };

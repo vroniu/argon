@@ -57,12 +57,12 @@ describe('JwtInterceptor', () => {
   it('shouldnt add JWT token when url is on the exception list', () => {
     spyOn(authService, 'getToken').and.returnValue('jwt.token');
 
-    environment.jwtExceptionUrls.forEach(exceptionUrl => {
-      httpClient.get<any>(exceptionUrl).subscribe((response) => {
+    ['login', 'register'].forEach(exceptionUrl => {
+      httpClient.get<any>(environment.apiUrl + exceptionUrl).subscribe((response) => {
         expect(response).toBeTruthy();
       });
 
-      const request = httpTestingController.expectOne(exceptionUrl);
+      const request = httpTestingController.expectOne(environment.apiUrl + exceptionUrl);
       expect(request.request.headers.has('Authorization')).toBeFalse()
       expect(request.request.headers.get('Authorization')).toEqual(null);
       request.flush({data: true});

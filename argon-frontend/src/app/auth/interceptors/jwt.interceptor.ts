@@ -12,11 +12,14 @@ export class JWTInterceptor implements HttpInterceptor {
   private URL_EXCEPTIONS: string[] = [];
 
   constructor(private authService: AuthService) {
-    this.URL_EXCEPTIONS = environment.jwtExceptionUrls;
+    this.URL_EXCEPTIONS = [
+      'login',
+      'register'
+    ];
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler) {
-    if (this.URL_EXCEPTIONS.some((exceptionUrl) => exceptionUrl === req.url)) {
+    if (this.URL_EXCEPTIONS.some((exceptionUrl) => req.url.endsWith(exceptionUrl))) {
       return next.handle(req);
     }
     const token = this.authService.getToken();
