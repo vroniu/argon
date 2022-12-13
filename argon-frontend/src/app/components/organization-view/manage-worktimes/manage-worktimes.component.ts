@@ -71,6 +71,10 @@ export class ManageWorktimesComponent implements OnInit, OnDestroy {
   }
 
   private mapProjectsToSubprojectsList(projects: Project[]): Subproject[] {
+    const subprojectFlatmap = projects.map(project => project.subprojects);
+    if (subprojectFlatmap.length === 0) {
+      return [];
+    }
     return projects.map(project => project.subprojects)
       .reduce((a,b) => {
         if (!a) {

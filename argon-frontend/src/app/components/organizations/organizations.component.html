@@ -14,7 +14,7 @@
     <p class="card-title">Joined organizations</p>
     <div class="organization-grid">
       <arg-organization
-        *ngFor="let ownedOrganization of ownedOrganizations"
+        *ngFor="let ownedOrganization of joinedOrganizations"
         [organization]="ownedOrganization"
         (onOrganizationClicked)="onOrganizationClicked(ownedOrganization, false)"
       ></arg-organization>
