@@ -29,7 +29,7 @@ export class ManageProjectsComponent implements OnInit, OnDestroy {
 
   private _transformer = (node: any, level: number) => {
     return {
-      expandable: !!node.organizationId,
+      expandable: node.projectId === undefined,
       name: node.name,
       level: level,
       originalData: node
