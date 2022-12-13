@@ -2,6 +2,12 @@ import { FormGroup } from '@angular/forms';
 import { Organization } from 'src/app/models/organization.model';
 import { Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import * as _ from 'lodash';
+
+export interface OrganizationDialogData {
+  editMode?: boolean;
+  organization?: Organization;
+}
 
 @Component({
   selector: 'arg-organization-dialog',
@@ -11,12 +17,14 @@ import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 export class OrganizationDialogComponent implements OnInit {
   @ViewChild('organizationForm') organizationForm: FormGroup;
   organization: Organization = new Organization();
+  editMode: boolean;
 
-  constructor(private dialogRef: MatDialogRef<OrganizationDialogComponent>, @Inject(MAT_DIALOG_DATA) private organizationData: Organization) { }
+  constructor(private dialogRef: MatDialogRef<OrganizationDialogComponent>, @Inject(MAT_DIALOG_DATA) private data: OrganizationDialogData) { }
 
   ngOnInit(): void {
-    if (this.organizationData) {
-      this.organization.name = this.organizationData.name;
+    this.editMode = this.data.editMode;
+    if (this.editMode) {
+      this.organization = _.cloneDeep(this.data.organization);
     }
   }
 

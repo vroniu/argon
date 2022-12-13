@@ -1,5 +1,5 @@
 <form id="organization-form" #organizationForm="ngForm">
-<h1 mat-dialog-title>Add organization</h1>
+<h1 mat-dialog-title>{{editMode ? 'Edit' : 'Add'}} organization</h1>
 <div mat-dialog-content>
     <mat-form-field>
       <mat-label>Name</mat-label>

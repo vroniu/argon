@@ -24,8 +24,6 @@ public class OrganizationService {
     @Autowired
     OrganizationMapper organizationMapper;
     @Autowired
-    EmployeeService employeeService;
-    @Autowired
     Organization2EmployeeDao organization2EmployeeDao;
 
     public List<OrganizationDTO> getOrganizationsOwnedByUser(Long userId) {
@@ -48,6 +46,20 @@ public class OrganizationService {
         organization = organizationRepository.saveAndFlush(organization);
         organization2EmployeeDao.updateEmployeeInfo(organization.getId(), owner.getId(), "Owner", LocalDate.now());
         return organizationMapper.toDTO(organization);
+    }
+
+    public OrganizationDTO update(OrganizationDTO organizationDTO) {
+        organizationRepository.updateOrganizationFields(organizationDTO.getId(), organizationDTO.getName());
+        return organizationDTO;
+    }
+
+    public EmployeeWithPositionDTO updateEmployeePosition(EmployeeWithPositionDTO employee, Long organizationId) {
+        organization2EmployeeDao.updateEmployeeInfo(organizationId, employee.getId(), employee.getPosition());
+        return employee;
+    }
+
+    public void deleteEmployeeFromOrganization(Long organizationId, Long employeeId) {
+        organization2EmployeeDao.deleteEmployeeFromOrganization(organizationId, employeeId);
     }
 
     public Boolean employeeOwnsOrganization(Long emploeeId, Long organizationId) {

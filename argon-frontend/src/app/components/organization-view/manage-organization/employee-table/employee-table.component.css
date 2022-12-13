@@ -37,3 +37,7 @@
 #no-data-icon {
   font-size: 30px;
 }
+
+.owner {
+  color: var(--material-primary)
+}

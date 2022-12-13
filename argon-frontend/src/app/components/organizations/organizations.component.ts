@@ -1,4 +1,4 @@
-import { OrganizationDialogComponent } from './organization-dialog/organization-dialog.component';
+import { OrganizationDialogComponent, OrganizationDialogData } from './organization-dialog/organization-dialog.component';
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Organization } from 'src/app/models/organization.model';
@@ -43,7 +43,11 @@ export class OrganizationsComponent implements OnInit {
 
   onOrganizationClicked(organization: Organization, owner: boolean) {
     if (organization.addOrganizationCard) {
-      const dialogRef = this.dialog.open(OrganizationDialogComponent);
+      const dialogRef = this.dialog.open(OrganizationDialogComponent, {
+        data: {
+          editMode: false
+        } as OrganizationDialogData
+      });
       dialogRef.afterClosed().subscribe(data => {
         if (data.save) {
           this.organizationService.createOrganization(data.organization).subscribe(() => this.loadOwnedOrganizations());

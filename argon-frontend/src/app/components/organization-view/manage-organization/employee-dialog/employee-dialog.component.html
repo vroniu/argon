@@ -1,0 +1,21 @@
+<form id="employee-form" #employeeForm="ngForm">
+  <h1 mat-dialog-title>Edit employee data</h1>
+  <div mat-dialog-content>
+      <mat-form-field>
+        <mat-label>Name</mat-label>
+        <input id="name" name="name" value="{{employee.firstName}} {{employee.lastName}}" matInput type="text" disabled>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Joined at</mat-label>
+        <input id="date" name="date" value="{{employee.joinedDate | date: 'd MMM y (EEEE)' }}" matInput type="text" disabled>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Position</mat-label>
+        <input id="postion" name="postion" [(ngModel)]="employee.position"  matInput type="text" required>
+      </mat-form-field>
+    </div>
+    <div mat-dialog-actions>
+      <button class="dialogButton" mat-raised-button (click)="onClose(false)">Cancel</button>
+      <button class="dialogButton" mat-raised-button color="primary" cdkFocusInitial (click)="onClose(true)">Save</button>
+    </div>
+  </form>

@@ -6,6 +6,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import src.argon.argon.entity.Employee;
 import src.argon.argon.entity.Organization;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -18,6 +20,9 @@ class OrganizationRepositoryTest {
 
     @Autowired
     EmployeeRepository employeeRepository;
+
+    @PersistenceContext
+    EntityManager em;
 
     @Test
     void findByOwnersId_isOwner_findsOrganization() {
@@ -77,5 +82,18 @@ class OrganizationRepositoryTest {
         List<Organization> foundOrganizations = underTest.findByEmployeesId(employee.getId());
         // then
         assertTrue(foundOrganizations.isEmpty());
+    }
+
+    @Test
+    void updateOrganizationFields_UpdatesOrganization() {
+        Organization organization = new Organization();
+        organization.setName("Old Name");
+        underTest.save(organization);
+        Organization savedOrganization = underTest.findAll().get(0);
+
+        underTest.updateOrganizationFields(savedOrganization.getId(), "New Name");
+        em.clear();
+
+        assertEquals("New Name", underTest.getById(savedOrganization.getId()).getName());
     }
 }

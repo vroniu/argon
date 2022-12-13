@@ -46,6 +46,11 @@ public class OrganizationController {
         return ResponseEntity.status(201).body(organizationService.create(organizationDTO, user.getEmployee()));
     }
 
+    @PutMapping("")
+    public ResponseEntity<OrganizationDTO> updateOrganization(@RequestBody OrganizationDTO organizationDTO) {
+        return ResponseEntity.status(200).body(organizationService.update(organizationDTO));
+    }
+
     @GetMapping("/{id}/employees")
     public List<EmployeeWithPositionDTO> getEmployeesInfoForOrganization(@PathVariable Long id) {
         return organizationService.getEmployeesWithPositions(id);
@@ -57,4 +62,13 @@ public class OrganizationController {
         return ResponseEntity.ok().body(organizationService.getEmployeeInfo(id, user.getEmployee().getId()));
     }
 
+    @PutMapping("/{id}/employees")
+    public ResponseEntity<EmployeeWithPositionDTO> updateEmployeeInfoForOrganization(@PathVariable Long id, @RequestBody EmployeeWithPositionDTO employee) {
+        return ResponseEntity.ok().body(organizationService.updateEmployeePosition(employee, id));
+    }
+
+    @DeleteMapping("/{id}/employees/{employeeId}")
+    public void deleteEmployeeFromOrganization(@PathVariable Long id, @PathVariable Long employeeId) {
+        organizationService.deleteEmployeeFromOrganization(id, employeeId);
+    }
 }

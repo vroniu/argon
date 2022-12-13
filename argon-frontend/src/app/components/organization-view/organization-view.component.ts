@@ -29,6 +29,15 @@ export class OrganizationViewComponent implements OnInit {
         this.organizationService.getOrganizationEmployeeInfo(this.organization.id).subscribe(
           employeeInfo => this.employeeInfo = employeeInfo
         );
+        // Subscribe to topic to refresh organization info
+        this.organizationService.getOrganizationsUpdated().subscribe(id => {
+          if (id === this.organization.id) {
+            this.organizationService.getOrganizationById(id).subscribe(updatedOrganization => {
+              this.organization = updatedOrganization;
+              this.organizationSubject.next(updatedOrganization);
+            });
+          }
+        })
       });
     });
     this.route.queryParams.subscribe(queryParams => {

@@ -4,7 +4,7 @@
       <div class="worktime-info">
         <div class="label">Name</div>
         <div class="ellipsis">
-          {{employee.firstName}} {{employee.lastName}}
+          {{employee.firstName}} {{employee.lastName}} <span class="owner" *ngIf="employee.isOwner">(owner)</span>
         </div>
         <div class="label">Postition</div>
         <div class="ellipsis">{{employee.position}}</div>

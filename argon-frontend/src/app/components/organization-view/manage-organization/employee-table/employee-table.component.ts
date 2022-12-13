@@ -7,15 +7,11 @@ import { Worktime } from 'src/app/models/worktime.model';
   templateUrl: './employee-table.component.html',
   styleUrls: ['./employee-table.component.css']
 })
-export class EmployeeTableComponent implements OnInit {
+
+export class EmployeeTableComponent {
   @Input() employees: Employee[];
   @Output() onEmployeeEdit = new EventEmitter<Employee>();
   @Output() onEmployeeDelete = new EventEmitter<Employee>();
-
-  constructor() { }
-
-  ngOnInit(): void {
-  }
 
   deleteWorktime(worktime: Employee) {
     this.onEmployeeDelete.emit(worktime);

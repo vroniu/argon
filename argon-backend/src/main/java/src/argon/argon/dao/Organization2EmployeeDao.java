@@ -16,6 +16,7 @@ public class Organization2EmployeeDao {
     private static final String QUERY_UPDATE_EMPLOYEE_INFO = "UPDATE organization2employee o2e SET employee_postion = ?, joined_date = ? WHERE organization_id = ? AND employee_id = ?;";
     private static final String QUERY_UPDATE_EMPLOYEE_POSITION = "UPDATE organization2employee o2e SET employee_postion = ? WHERE organization_id = ? AND employee_id = ?;";
 
+    private static final String QUERY_DELETE_EMPLOYEE_FROM_ORGANIZATION = "DELETE FROM organization2employee o2e WHERE organization_id = ? AND employee_id = ?;";
 
     @Autowired
     JdbcTemplate jdbcTemplate;
@@ -34,6 +35,10 @@ public class Organization2EmployeeDao {
 
     public void updateEmployeeInfo(Long organizationId, Long employeeId, String position, LocalDate joinedDate) {
         jdbcTemplate.update(QUERY_UPDATE_EMPLOYEE_INFO, new Object[]{position, joinedDate, organizationId, employeeId});
+    }
+
+    public void deleteEmployeeFromOrganization(Long organizationId, Long employeeId) {
+        jdbcTemplate.update(QUERY_DELETE_EMPLOYEE_FROM_ORGANIZATION, new Object[]{organizationId, employeeId});
     }
 
     private RowMapper<EmployeeWithPositionDTO> rowMapper = (rs, rowNum) -> {
