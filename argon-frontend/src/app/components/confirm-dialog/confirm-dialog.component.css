@@ -5,3 +5,15 @@
 #dialog-buttons {
   justify-content: center;
 }
+
+.serious {
+  font-weight: bold;
+}
+
+p {
+  margin-bottom: 1rem;
+}
+
+mat-form-field {
+  width: 100%;
+}

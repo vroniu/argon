@@ -3,12 +3,21 @@
   <p>
     {{ data.content }}
   </p>
+  <p class="serious" *ngIf="data.serious">
+    {{ data.seriousWarning }}
+  </p>
+  <p *ngIf="data.serious">
+    Type in '{{ data.seriousConfirmWord }}' to confirm your choice.
+  </p>
+  <mat-form-field *ngIf="data.serious">
+    <input id="confirm-word" name="confirm-word" [(ngModel)]="confirmWord" matInput required>
+  </mat-form-field>
 </div>
 <div id="dialog-buttons" mat-dialog-actions>
   <button id="cancel-button" class="dialogButton" mat-raised-button (click)="onClose(false)">
     {{ data.cancelButton ? data.cancelButton : 'Cancel' }}
   </button>
-  <button id="confirm-button" class="dialogButton" mat-raised-button color="primary" cdkFocusInitial (click)="onClose(true)">
+  <button id="confirm-button" class="dialogButton" mat-raised-button color="primary" cdkFocusInitial [disabled]="data.serious ? data.seriousConfirmWord !== confirmWord : false" (click)="onClose(true)">
     {{ data.confirmButton ? data.confirmButton : 'Confirm' }}
   </button>
 </div>

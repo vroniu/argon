@@ -6,6 +6,9 @@ export interface ConfirmDialogData {
   content: string,
   confirmButton?: string;
   cancelButton?: string;
+  serious?: boolean
+  seriousWarning?: string
+  seriousConfirmWord?: string
 }
 
 @Component({
@@ -14,6 +17,7 @@ export interface ConfirmDialogData {
   styleUrls: ['./confirm-dialog.component.css']
 })
 export class ConfirmDialogComponent {
+  confirmWord: string;
 
   constructor(private dialogRef: MatDialogRef<ConfirmDialogComponent, boolean>, @Inject(MAT_DIALOG_DATA) public data: ConfirmDialogData ) { }
 
