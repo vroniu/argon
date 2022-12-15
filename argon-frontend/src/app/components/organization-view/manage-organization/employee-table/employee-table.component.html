@@ -2,14 +2,18 @@
   <ng-container *ngIf="employees?.length !== 0; else noemployees">
     <mat-card class="worktime-card" *ngFor="let employee of employees">
       <div class="worktime-info">
-        <div class="label">Name</div>
-        <div class="ellipsis">
-          {{employee.firstName}} {{employee.lastName}} <span class="owner" *ngIf="employee.isOwner">(owner)</span>
+        <div class="align-items label">Name</div>
+        <div class="ellipsis flex">
+          <div class="flex center">{{employee.firstName}} {{employee.lastName}} </div>
+          <div class="flex">
+            <div *ngIf="employee.isOwner" class="badge owner center">Owner</div>
+            <div *ngIf="employee.id === currentUserId" class="badge you center">You</div>
+          </div>
         </div>
-        <div class="label">Postition</div>
-        <div class="ellipsis">{{employee.position}}</div>
-        <div class="label">Joined</div>
-        <div class="ellipsis">{{employee.joinedDate | date: 'd MMM y (EEEE)' }}</div>
+        <div class="align-items label">Postition</div>
+        <div class="align-items ellipsis">{{employee.position}}</div>
+        <div class="align-items label">Joined</div>
+        <div class="align-items ellipsis">{{employee.joinedDate | date: 'd MMM y (EEEE)' }}</div>
       </div>
       <div class="worktime-buttons">
         <button mat-raised-button color="primary" (click)="editWorktime(employee)">Edit</button>

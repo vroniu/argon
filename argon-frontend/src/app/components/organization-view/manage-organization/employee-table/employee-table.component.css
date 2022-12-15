@@ -41,3 +41,34 @@
 .owner {
   color: var(--material-primary)
 }
+
+.flex {
+  display: flex;
+  column-gap: 0.3rem;
+}
+
+.center {
+  align-items: center;
+  justify-content: center;
+}
+
+.badge {
+  font-size: 0.8rem;
+  border-radius: 0.3rem;
+  padding-left: 0.3rem; padding-right: 0.3rem;
+  display: flex;
+}
+
+.owner {
+  background-color: var(--material-primary);
+  color: white;
+}
+
+.you {
+  background-color: darkgrey;
+}
+
+.align-items {
+  display: flex;
+  align-items: center;
+}
