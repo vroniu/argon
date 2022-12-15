@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import src.argon.argon.dto.UserDTO;
-import src.argon.argon.mapper.UserMapper;
 import src.argon.argon.security.models.*;
 import src.argon.argon.security.service.JWTUtilService;
 import src.argon.argon.security.service.UserService;
@@ -58,7 +57,6 @@ public class AuthenticationController {
         }
         if (!StringUtils.validEmail(registrationRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new JsonResponse("INVALID_EMAIL", "Invalid email"));
-
         }
         if (userService.emailTaken(registrationRequest.getEmail())) {
             return ResponseEntity.badRequest().body(new JsonResponse("EMAIL_TAKEN","Email already in use"));
@@ -68,7 +66,7 @@ public class AuthenticationController {
             return ResponseEntity.badRequest().body(new JsonResponse("NO_PASSWORD","Password not provided"));
         }
         if (!StringUtils.validPassword(registrationRequest.getPassword())) {
-            return ResponseEntity.badRequest().body(new JsonResponse("INVALID_PASSWORD","Invalid password."));
+            return ResponseEntity.badRequest().body(new JsonResponse("INVALID_PASSWORD","Invalid password"));
         }
 
         userService.registerUser(registrationRequest);

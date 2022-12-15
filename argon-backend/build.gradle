@@ -31,6 +31,7 @@ dependencies {
 	testImplementation 'org.flywaydb.flyway-test-extensions:flyway-spring-test:7.0.0'
 	implementation 'io.springfox:springfox-boot-starter:3.0.0'
 	implementation 'org.springframework.boot:spring-boot-starter-security:2.6.0'
+	testImplementation 'org.springframework.security:spring-security-test:4.2.3.RELEASE'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	implementation 'com.google.code.gson:gson:2.9.1'
