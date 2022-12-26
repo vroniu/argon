@@ -39,8 +39,14 @@ export class OrganizationService {
     return this.http.post<Organization>(OrganizationService.ORGANIZATION_URL, organization);
   }
 
+  addEmployeeToOrganization(id: number, employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(`${OrganizationService.ORGANIZATION_URL}/${id}/employees`, employee)
+      .pipe(tap(() => this.organizationsUpdated.next(id)));
+  }
+
   updateOrganization(organization: Organization): Observable<Organization> {
-    return this.http.put<Organization>(OrganizationService.ORGANIZATION_URL, organization).pipe(tap(() => this.organizationsUpdated.next(organization.id)));
+    return this.http.put<Organization>(OrganizationService.ORGANIZATION_URL, organization)
+      .pipe(tap(() => this.organizationsUpdated.next(organization.id)));
   }
 
   getOrganizationEmployeeInfo(id: number): Observable<Employee> {

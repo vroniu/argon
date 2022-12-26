@@ -8,7 +8,7 @@
   font-weight: bold;
 }
 
-#edit-button {
+.organization-button {
   grid-column: 1 / 3;
 }
 
