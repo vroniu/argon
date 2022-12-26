@@ -1,9 +1,9 @@
 package src.argon.argon.service;
 
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import src.argon.argon.dao.Organization2EmployeeDao;
+import src.argon.argon.dto.EmployeeDTO;
 import src.argon.argon.dto.EmployeeWithPositionDTO;
 import src.argon.argon.dto.OrganizationDTO;
 import src.argon.argon.entity.Employee;
@@ -11,7 +11,6 @@ import src.argon.argon.entity.Organization;
 import src.argon.argon.mapper.OrganizationMapper;
 import src.argon.argon.repository.OrganizationRepository;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
 import java.util.List;
@@ -19,6 +18,7 @@ import java.util.List;
 @Service
 @Transactional
 public class OrganizationService {
+
     @Autowired
     OrganizationRepository organizationRepository;
     @Autowired
@@ -58,6 +58,11 @@ public class OrganizationService {
         return employee;
     }
 
+    public EmployeeWithPositionDTO addEmployeeToOrganization(EmployeeDTO employee, OrganizationDTO organization) {
+        organization2EmployeeDao.addEmployeeToOrganization(organization.getId(), employee.getId(), LocalDate.now(), "Member");
+        return getEmployeeInfo(organization.getId(), employee.getId());
+    }
+
     public void deleteEmployeeFromOrganization(Long organizationId, Long employeeId) {
         organization2EmployeeDao.deleteEmployeeFromOrganization(organizationId, employeeId);
     }
@@ -78,7 +83,7 @@ public class OrganizationService {
         return organization2EmployeeDao.getEmployeesInfoForOrganization(organizationId);
     }
 
-    public EmployeeWithPositionDTO getEmployeeInfo(Long organizationId, Long emploeeId) {
-        return organization2EmployeeDao.getEmployeeInfoForOrganization(organizationId, emploeeId);
+    public EmployeeWithPositionDTO getEmployeeInfo(Long organizationId, Long employeeId) {
+        return organization2EmployeeDao.getEmployeeInfoForOrganization(organizationId, employeeId);
     }
 }

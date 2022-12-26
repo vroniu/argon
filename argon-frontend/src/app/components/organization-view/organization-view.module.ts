@@ -19,6 +19,7 @@ import { ManageOrganizationComponent } from './manage-organization/manage-organi
 import { MatTreeModule } from '@angular/material/tree';
 import { ProjectDialogComponent } from './manage-projects/project-dialog/project-dialog.component';
 import { EmployeeDialogComponent } from './manage-organization/employee-dialog/employee-dialog.component';
+import { AddEmployeeDialogComponent } from './manage-organization/add-employee-dialog/add-employee-dialog.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { EmployeeDialogComponent } from './manage-organization/employee-dialog/e
     ManageOrganizationComponent,
     ProjectDialogComponent,
     EmployeeDialogComponent,
+    AddEmployeeDialogComponent,
   ],
   imports: [
     CommonModule,

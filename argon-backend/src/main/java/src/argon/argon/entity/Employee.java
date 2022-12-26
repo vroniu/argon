@@ -23,6 +23,14 @@ public class Employee {
     @Column(name = "last_name")
     private String lastName;
 
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name="organization2employee",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "organization_id")
+    )
+    private List<Organization> joinedOrganizations;
+
     public Long getId() {
         return id;
     }
@@ -58,5 +66,14 @@ public class Employee {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    public List<Organization> getJoinedOrganizations() {
+        return joinedOrganizations;
+    }
+
+    // Should be preferably used only for tests!
+    public void setJoinedOrganizations(List<Organization> joinedOrganizations) {
+        this.joinedOrganizations = joinedOrganizations;
     }
 }

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import src.argon.argon.dto.EmployeeDTO;
 import src.argon.argon.dto.EmployeeWithPositionDTO;
 import src.argon.argon.dto.OrganizationDTO;
 import src.argon.argon.security.models.User;
@@ -49,6 +50,13 @@ public class OrganizationController {
     @PutMapping("")
     public ResponseEntity<OrganizationDTO> updateOrganization(@RequestBody OrganizationDTO organizationDTO) {
         return ResponseEntity.status(200).body(organizationService.update(organizationDTO));
+    }
+
+    @PostMapping("/{id}/employees")
+    public ResponseEntity<EmployeeWithPositionDTO> addEmployeeToOrganization(@PathVariable Long id, @RequestBody EmployeeDTO employee) {
+        OrganizationDTO organization = new OrganizationDTO();
+        organization.setId(id);
+        return ResponseEntity.ok().body(organizationService.addEmployeeToOrganization(employee, organization));
     }
 
     @GetMapping("/{id}/employees")

@@ -3,14 +3,14 @@ package src.argon.argon.service;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import src.argon.argon.dao.Organization2EmployeeDao;
+import src.argon.argon.dto.EmployeeDTO;
 import src.argon.argon.dto.EmployeeWithPositionDTO;
 import src.argon.argon.dto.OrganizationDTO;
-import src.argon.argon.entity.Organization;
-import src.argon.argon.mapper.OrganizationMapper;
 import src.argon.argon.repository.OrganizationRepository;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
@@ -53,6 +53,22 @@ class OrganizationServiceTest {
         assertEquals("New position", result.getPosition());
         assertEquals(123L, result.getId());
         verify(organization2EmployeeDao, times(1)).updateEmployeeInfo(1234L, 123L, "New position");
+    }
+
+    @Test
+    void addEmployeeToOrganization_ShouldCallDaoAndReturnAddedEmployee() {
+        OrganizationDTO organization = new OrganizationDTO();
+        organization.setId(321L);
+        EmployeeDTO employee = new EmployeeDTO();
+        employee.setId(123L);
+        EmployeeWithPositionDTO employeeWithPosition = new EmployeeWithPositionDTO();
+        employeeWithPosition.setId(123L);
+        when(organization2EmployeeDao.getEmployeeInfoForOrganization(321L, 123L)).thenReturn(employeeWithPosition);
+
+        EmployeeWithPositionDTO result = underTest.addEmployeeToOrganization(employee, organization);
+
+        verify(organization2EmployeeDao, times(1)).addEmployeeToOrganization(eq(321L), eq(123L), any(LocalDate.class), eq("Member"));
+        assertEquals(employeeWithPosition, result);
     }
 
     @Test

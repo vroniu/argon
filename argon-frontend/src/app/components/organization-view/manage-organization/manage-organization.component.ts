@@ -1,3 +1,4 @@
+import { AddEmployeeDialogComponent, AddEmployeeDialogData } from './add-employee-dialog/add-employee-dialog.component';
 import { ConfirmDialogComponent, ConfirmDialogData } from './../../confirm-dialog/confirm-dialog.component';
 import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
 import { OrganizationDialogComponent, OrganizationDialogData } from './../../organizations/organization-dialog/organization-dialog.component';
@@ -84,6 +85,14 @@ export class ManageOrganizationComponent implements OnInit {
         });
       }
     })
+  }
+
+  addEmployee(): void {
+    const dialogRef = this.dialog.open(AddEmployeeDialogComponent, {
+      data: {
+        organizationId: this.organizationInfo.id
+      } as AddEmployeeDialogData
+    });
   }
 
   private getOrganizationData(): void {

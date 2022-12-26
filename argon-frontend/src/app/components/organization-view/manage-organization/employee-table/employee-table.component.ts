@@ -11,8 +11,10 @@ import { Worktime } from 'src/app/models/worktime.model';
 
 export class EmployeeTableComponent implements OnInit {
   @Input() employees: Employee[];
+  @Input() mode: 'JOINED' | 'NOT_JOINED';
   @Output() onEmployeeEdit = new EventEmitter<Employee>();
   @Output() onEmployeeDelete = new EventEmitter<Employee>();
+  @Output() onEmployeeAdded = new EventEmitter<Employee>();
   currentUserId: number;
 
   constructor(private authService: AuthService) {}
@@ -21,12 +23,16 @@ export class EmployeeTableComponent implements OnInit {
     this.currentUserId = this.authService.getCurrentUser().id;
   }
 
-  deleteWorktime(worktime: Employee) {
-    this.onEmployeeDelete.emit(worktime);
+  deleteEmployee(employee: Employee) {
+    this.onEmployeeDelete.emit(employee);
   }
 
-  editWorktime(worktime: Employee) {
-    this.onEmployeeEdit.emit(worktime);
+  editEmployee(employee: Employee) {
+    this.onEmployeeEdit.emit(employee);
+  }
+
+  addEmployee(employee: Employee) {
+    this.onEmployeeAdded.emit(employee);
   }
 
 }

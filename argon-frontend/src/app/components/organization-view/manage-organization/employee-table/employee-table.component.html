@@ -6,18 +6,23 @@
         <div class="ellipsis">
           {{employee.firstName}} {{employee.lastName}}
         </div>
-        <div class="label">Postition</div>
-        <div class="ellipsis">{{employee.position}}</div>
-        <div class="label">Joined</div>
-        <div class="ellipsis">{{employee.joinedDate | date: 'd MMM y (EEEE)' }}</div>
-        <div *ngIf="employee.isOwner || employee.id === currentUserId" class="badge-holder">
+        <div *ngIf="mode === 'NOT_JOINED'" class="label">Email</div>
+        <div *ngIf="mode === 'NOT_JOINED'" class="ellipsis">
+          {{employee.firstName}} {{employee.lastName}}
+        </div>
+        <div *ngIf="mode === 'JOINED'" class="label">Postition</div>
+        <div *ngIf="mode === 'JOINED'" class="ellipsis">{{employee.position}}</div>
+        <div *ngIf="mode === 'JOINED'" class="label">Joined</div>
+        <div *ngIf="mode === 'JOINED'" class="ellipsis">{{employee.joinedDate | date: 'd MMM y (EEEE)' }}</div>
+        <div *ngIf="(employee.isOwner || employee.id === currentUserId) && mode ==='JOINED'" class="badge-holder">
           <div *ngIf="employee.isOwner" class="badge owner center">Owner</div>
           <div *ngIf="employee.id === currentUserId" class="badge you center">You</div>
         </div>
       </div>
       <div class="worktime-buttons">
-        <button mat-raised-button color="primary" (click)="editWorktime(employee)">Edit</button>
-        <button mat-raised-button color="warn" (click)="deleteWorktime(employee)">Remove</button>
+        <button *ngIf="mode === 'JOINED'" mat-raised-button color="primary" (click)="editEmployee(employee)">Edit</button>
+        <button *ngIf="mode === 'JOINED'" mat-raised-button color="warn" (click)="deleteEmployee(employee)">Remove</button>
+        <button *ngIf="mode === 'NOT_JOINED'" mat-raised-button color="primary" (click)="addEmployee(employee)">Add</button>
       </div>
     </mat-card>
   </ng-container>

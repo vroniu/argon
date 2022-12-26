@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Add employees</h1>
+<div mat-dialog-content class="main">
+  <mat-form-field>
+    <input id="name" name="name" matInput placeholder="Search by name or email" type="text">
+  </mat-form-field>
+  <arg-employee-table
+    id="employee-table"
+    (onEmployeeAdded)="addEmployee($event)"
+    [employees]="employees"
+    mode="NOT_JOINED"
+  ></arg-employee-table>
+</div>
+<div class="dialog-buttons" mat-dialog-actions>
+  <button class="dialogButton" mat-raised-button (click)="onClose()">Close</button>
+</div>
