@@ -35,8 +35,7 @@ public class OrganizationService {
     }
 
     public OrganizationDTO getOrganizationById(Long id) {
-        Organization organization = organizationRepository.getById(id);
-        return organizationMapper.toDTO(organization);
+        return organizationMapper.toDTO(organizationRepository.getById(id));
     }
 
     public OrganizationDTO create(OrganizationDTO organizationDTO, Employee owner) {
