@@ -18,6 +18,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -56,6 +57,31 @@ class EmployeeServiceTest {
         assertFalse(result.stream().anyMatch(employeeDTO -> employeeDTO.getId() == 2L));
     }
 
+    @Test
+    void save_ShouldReturnSavedEmployee() {
+        Employee savedEmployee = createEmployees(1).get(0);
+        EmployeeDTO employeeToSave = employeeMapper.toDTO(savedEmployee);
+        employeeToSave.setId(null);
+        when(employeeRepository.save(any(Employee.class))).thenReturn(savedEmployee);
+
+        EmployeeDTO result = underTest.save(employeeToSave);
+
+        assertEquals(0L, result.getId());
+        assertEquals("Test 0", result.getLastName());
+    }
+
+    @Test
+    void getEmployee_ShouldReturnEmployee() {
+        Employee employee = createEmployees(1).get(0);
+        when(employeeRepository.getById(0L)).thenReturn(employee);
+
+        EmployeeDTO result = underTest.getEmployee(0L);
+
+        assertEquals(0, result.getId());
+        assertEquals("Adam", result.getFirstName());
+        assertEquals("Test 0", result.getLastName());
+    }
+
     private List<Employee> createEmployees(int count) {
         List<Employee> employeeList = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
@@ -63,7 +89,7 @@ class EmployeeServiceTest {
             employee.setJoinedOrganizations(Collections.emptyList());
             employee.setId((long) i);
             employee.setFirstName("Adam");
-            employee.setLastName("Test" + i);
+            employee.setLastName("Test " + i);
             employeeList.add(employee);
         }
         return employeeList;
