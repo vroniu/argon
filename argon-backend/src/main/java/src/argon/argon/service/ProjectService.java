@@ -17,8 +17,10 @@ public class ProjectService {
 
     @Autowired
     ProjectRepository projectRepository;
+
     @Autowired
     ProjectMapper projectMapper;
+
     @Autowired
     SubprojectRepository subprojectRepository;
 
@@ -27,8 +29,7 @@ public class ProjectService {
     }
 
     public ProjectDTO save(ProjectDTO projectDTO) {
-        Project project = projectMapper.toEntity(projectDTO);
-        return projectMapper.toDTO(projectRepository.save(project));
+        return projectMapper.toDTO(projectRepository.save(projectMapper.toEntity(projectDTO)));
     }
 
     public void delete(Long id) {
