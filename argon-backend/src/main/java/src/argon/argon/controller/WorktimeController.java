@@ -1,7 +1,6 @@
 package src.argon.argon.controller;
 
 import com.google.gson.Gson;
-import org.apache.tomcat.jni.Local;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -9,8 +8,6 @@ import org.springframework.web.bind.annotation.*;
 import src.argon.argon.dto.EmployeeDTO;
 import src.argon.argon.dto.OrganizationDTO;
 import src.argon.argon.dto.WorktimeDTO;
-import src.argon.argon.entity.Employee;
-import src.argon.argon.entity.Organization;
 import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.security.models.JsonResponse;
 import src.argon.argon.security.models.User;
@@ -19,7 +16,6 @@ import src.argon.argon.service.WorktimeService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController

@@ -1,7 +1,5 @@
 package src.argon.argon.service;
 
-import org.hibernate.Session;
-import org.hibernate.annotations.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import src.argon.argon.dto.WorktimeDTO;
@@ -9,10 +7,8 @@ import src.argon.argon.entity.Worktime;
 import src.argon.argon.mapper.WorktimeMapper;
 import src.argon.argon.repository.WorktimeRepository;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
-import java.time.ZonedDateTime;
 import java.util.List;
 
 @Service
@@ -26,7 +22,7 @@ public class WorktimeService {
 
     public WorktimeDTO save(WorktimeDTO worktimeDto) throws IllegalArgumentException {
         Worktime worktime = worktimeMapper.toEntity(worktimeDto);
-        if (worktime.getId() != null && (worktime.getSubproject().getDeleted() || worktime.getSubproject().getProject().getDeleted())) {
+        if (worktime.getId() != null && worktime.getSubproject().getDeleted()) {
             throw new IllegalArgumentException("Cant assign worktime to a deleted subproject/project");
         }
         return worktimeMapper.toDTO(worktimeRepository.save(worktime));
