@@ -4,5 +4,6 @@ export class Employee {
   lastName: string;
   position?: string;
   joinedDate?: Date;
+  email?: string;
   isOwner?: boolean;
 }

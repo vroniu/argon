@@ -8,7 +8,7 @@
         </div>
         <div *ngIf="mode === 'NOT_JOINED'" class="label">Email</div>
         <div *ngIf="mode === 'NOT_JOINED'" class="ellipsis">
-          {{employee.firstName}} {{employee.lastName}}
+          {{employee.email}}
         </div>
         <div *ngIf="mode === 'JOINED'" class="label">Postition</div>
         <div *ngIf="mode === 'JOINED'" class="ellipsis">{{employee.position}}</div>

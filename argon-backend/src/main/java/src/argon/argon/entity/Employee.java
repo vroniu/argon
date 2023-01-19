@@ -1,6 +1,7 @@
 package src.argon.argon.entity;
 
 import com.sun.istack.NotNull;
+import src.argon.argon.security.models.User;
 
 import javax.persistence.*;
 import java.util.List;
@@ -31,6 +32,9 @@ public class Employee {
     )
     private List<Organization> joinedOrganizations;
 
+    @OneToOne(fetch=FetchType.LAZY, mappedBy = "employee")
+    private User user;
+
     public Long getId() {
         return id;
     }
@@ -53,6 +57,10 @@ public class Employee {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public User getUser() {
+        return user;
     }
 
     @Override
