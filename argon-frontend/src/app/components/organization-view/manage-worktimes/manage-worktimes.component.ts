@@ -1,3 +1,4 @@
+import { MatDialog } from '@angular/material/dialog';
 import { WorktimeService } from './../../../services/worktime.service';
 import { ProjectService } from './../../../services/project.service';
 import { Worktime } from './../../../models/worktime.model';
@@ -7,6 +8,9 @@ import { Employee } from './../../../models/employee.model';
 import { Organization } from './../../../models/organization.model';
 import { Observable, Subscription } from 'rxjs';
 import { Component, Input, OnInit, OnDestroy } from '@angular/core';
+import { EditWorktimeDialogComponent } from '../edit-worktime-dialog/edit-worktime-dialog.component';
+import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'arg-manage-worktimes',
@@ -30,7 +34,7 @@ export class ManageWorktimesComponent implements OnInit, OnDestroy {
 
   worktimes: Worktime[] = [];
 
-  constructor(private projectService: ProjectService, private worktimeService: WorktimeService) { }
+  constructor(private projectService: ProjectService, private worktimeService: WorktimeService, private dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.organizationSubscription = this.organization.subscribe(organization => {
@@ -67,6 +71,44 @@ export class ManageWorktimesComponent implements OnInit, OnDestroy {
       this.rangeStart, this.rangeEnd, this.selectedEmployees, this.selectedSubprojects, this.organizationId
     ).subscribe((worktimes) => {
       this.worktimes = worktimes;
+    });
+  }
+
+  onWorktimeEdit(worktime: Worktime) {
+    const dialogRef = this.dialog.open(EditWorktimeDialogComponent, {
+      data: {
+        worktime: _.cloneDeep(worktime),
+        projects: this.projectList
+      }
+    });
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response && response.save) {
+        this.worktimeService.updateWorktime(response.data).subscribe(
+          (updatedWorktime) => {
+            this.worktimes = this.worktimes
+              .map(worktime => worktime.id === updatedWorktime.id ? updatedWorktime : worktime);
+          }
+        );
+      }
+    });
+  }
+
+  onWorktimeDelete(worktime: Worktime) {
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        header: 'Confirm delete',
+        content: 'Do you want to delete this worktime?'
+      }
+    });
+    dialogRef.afterClosed().subscribe((response) => {
+      if (response) {
+        this.worktimeService.deleteWorktime(worktime).subscribe(
+          () => {
+            this.worktimes = this.worktimes
+              .filter(item => item.id !== worktime.id);
+          }
+        );
+      }
     });
   }
 

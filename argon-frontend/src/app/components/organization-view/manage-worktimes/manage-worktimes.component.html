@@ -32,5 +32,7 @@
   <arg-worktime-table
     id="worktimes-list"
     [worktimes]="worktimes"
+    (onWorktimeDelete)="onWorktimeDelete($event)"
+    (onWorktimeEdit)="onWorktimeEdit($event)"
   ></arg-worktime-table>
 </div>

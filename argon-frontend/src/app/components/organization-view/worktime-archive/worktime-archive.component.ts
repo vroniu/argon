@@ -7,6 +7,7 @@ import { EditWorktimeDialogComponent } from '../edit-worktime-dialog/edit-workti
 import { ConfirmDialogComponent } from '../../confirm-dialog/confirm-dialog.component';
 import { Observable, Subscription } from 'rxjs';
 import { Organization } from 'src/app/models/organization.model';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'arg-worktime-archive',
@@ -46,7 +47,7 @@ export class WorktimeArchiveComponent implements OnInit, OnDestroy {
   onWorktimeEdit(worktime: Worktime) {
     const dialogRef = this.dialog.open(EditWorktimeDialogComponent, {
       data: {
-        worktime: JSON.parse(JSON.stringify(worktime)),
+        worktime: _.cloneDeep(worktime),
         projects: this.projects
       }
     });
