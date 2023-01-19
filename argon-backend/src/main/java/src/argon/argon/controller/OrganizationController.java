@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import src.argon.argon.dto.EmployeeDTO;
 import src.argon.argon.dto.EmployeeWithPositionDTO;
 import src.argon.argon.dto.OrganizationDTO;
+import src.argon.argon.security.models.JsonResponse;
 import src.argon.argon.security.models.User;
 import src.argon.argon.service.OrganizationService;
 
@@ -79,4 +80,25 @@ public class OrganizationController {
     public void deleteEmployeeFromOrganization(@PathVariable Long id, @PathVariable Long employeeId) {
         organizationService.deleteEmployeeFromOrganization(id, employeeId);
     }
+
+    @PostMapping("/{id}/employees/promote")
+    public ResponseEntity<?> promoteEmployeeToOwner(@PathVariable Long id, @RequestBody EmployeeDTO employee) {
+        try {
+            EmployeeDTO result = organizationService.promoteEmployeeToOwner(id, employee);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new JsonResponse("PROMOTE_ERROR", e.getMessage()));
+        }
+    }
+
+    @PostMapping("/{id}/employees/demote")
+    public ResponseEntity<?> demoteEmployeeFromOwner(@PathVariable Long id, @RequestBody EmployeeDTO employee) {
+        try {
+            EmployeeDTO result = organizationService.demoteEmployeeFromOwner(id, employee);
+            return ResponseEntity.ok(result);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(new JsonResponse("DEMOTE_ERROR", e.getMessage()));
+        }
+    }
+
 }

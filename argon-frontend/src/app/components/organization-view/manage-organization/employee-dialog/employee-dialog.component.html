@@ -13,6 +13,13 @@
         <mat-label>Position</mat-label>
         <input id="postion" name="postion" [(ngModel)]="employee.position"  matInput type="text" required>
       </mat-form-field>
+      <div matTooltip="You cannot demote yourself" [matTooltipDisabled]="!employeeIsOwner">
+      <button id="promote-button" mat-raised-button color="primary"
+        (click)="employeeIsOwner ? demoteEmployeeFromOwner() : promoteEmployeeToOwner()"
+        [disabled]="employeeIsUser">
+          {{ employeeIsOwner ? 'Demote from owner' : 'Promote to owner' }}
+      </button>
+      </div>
     </div>
     <div mat-dialog-actions>
       <button class="dialogButton" mat-raised-button (click)="onClose(false)">Cancel</button>

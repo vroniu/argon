@@ -61,4 +61,13 @@ export class OrganizationService {
     return this.organizationsUpdated;
   }
 
+  promoteEmployeeToOwner(id: number, employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(`${OrganizationService.ORGANIZATION_URL}/${id}/employees/promote`, employee)
+      .pipe(tap(() => this.organizationsUpdated.next(id)));
+  }
+
+  demoteEmployeeFromOwner(id: number, employee: Employee): Observable<Employee> {
+    return this.http.post<Employee>(`${OrganizationService.ORGANIZATION_URL}/${id}/employees/demote`, employee)
+      .pipe(tap(() => this.organizationsUpdated.next(id)));
+  }
 }

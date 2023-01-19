@@ -1,6 +1,6 @@
 import { AddEmployeeDialogComponent, AddEmployeeDialogData } from './add-employee-dialog/add-employee-dialog.component';
 import { ConfirmDialogComponent, ConfirmDialogData } from './../../confirm-dialog/confirm-dialog.component';
-import { EmployeeDialogComponent } from './employee-dialog/employee-dialog.component';
+import { EmployeeDialogComponent, EmployeeDialogData } from './employee-dialog/employee-dialog.component';
 import { OrganizationDialogComponent, OrganizationDialogData } from './../../organizations/organization-dialog/organization-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { OrganizationService } from 'src/app/services/organization.service';
@@ -60,7 +60,10 @@ export class ManageOrganizationComponent implements OnInit {
 
   editEmployee(employee: Employee): void {
     const dialogRef = this.dialog.open(EmployeeDialogComponent, {
-      data: employee
+      data: {
+        employee: employee,
+        organization: this.organizationInfo
+      } as EmployeeDialogData
     });
     dialogRef.afterClosed().subscribe(data => {
       if (data.save) {

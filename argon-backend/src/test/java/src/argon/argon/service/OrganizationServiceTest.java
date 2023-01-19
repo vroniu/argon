@@ -169,6 +169,146 @@ class OrganizationServiceTest {
         assertEquals(result, employeesWithOrganization);
     }
 
+    @Test
+    void promoteEmployeeToOwner_ShouldThrowException_IfEmployeeNotInOrganization() {
+        Employee employee = createEmployee();
+        Organization organization =  createOrganizations(1).get(0);
+        when(organizationRepository.getById(organization.getId())).thenReturn(organization);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.promoteEmployeeToOwner(organization.getId(), employeeMapper.toDTO(employee));
+        });
+
+        assertNotNull(exception);
+        assertEquals("This employee does not belong to this organization", exception.getMessage());
+    }
+    @Test
+    void promoteEmployeeToOwner_ShouldThrowException_IfEmployeeIsAlreadyOwner() {
+        Employee employee = createEmployee();
+        Organization organization =  createOrganizations(1).get(0);
+        organization.setEmployees(List.of(employee));
+        organization.setOwners(List.of(employee));
+        when(organizationRepository.getById(organization.getId())).thenReturn(organization);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.promoteEmployeeToOwner(organization.getId(), employeeMapper.toDTO(employee));
+        });
+
+        assertNotNull(exception);
+        assertEquals("This employee is already marked as owner of this organization", exception.getMessage());
+    }
+    @Test
+    void promoteEmployeeToOwner_ShouldAddEmployeeToOwners() {
+        Employee employee = createEmployee();
+        Organization organization =  createOrganizations(1).get(0);
+        organization.setEmployees(List.of(employee));
+        organization.setOwners(new ArrayList<>());
+        Organization organizationWithEmployeeAsOwner = createOrganizations(1).get(0);
+        organizationWithEmployeeAsOwner.setEmployees(List.of(employee));
+        organizationWithEmployeeAsOwner.setOwners(List.of(employee));
+        ArgumentCaptor<Organization> organizationArgumentCaptor = ArgumentCaptor.forClass(Organization.class);
+        when(organizationRepository.getById(organization.getId())).thenReturn(organization);
+        when(organizationRepository.save(organizationArgumentCaptor.capture())).thenReturn(organizationWithEmployeeAsOwner);
+
+        EmployeeDTO result = underTest.promoteEmployeeToOwner(organization.getId(), employeeMapper.toDTO(employee));
+
+        assertEquals(employee.getFirstName(), result.getFirstName());
+        assertEquals(employee.getLastName(), result.getLastName());
+        assertEquals(employee.getId(), result.getId());
+        assertTrue(organizationArgumentCaptor.getValue().getOwners().stream().anyMatch(owner -> owner.getId() == employee.getId()));
+    }
+
+    @Test
+    void demoteEmployeeFromOwner_ShouldThrowException_IfEmployeeNotInOrganization() {
+        Employee employee = createEmployee();
+        Organization organization =  createOrganizations(1).get(0);
+        when(organizationRepository.getById(organization.getId())).thenReturn(organization);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.demoteEmployeeFromOwner(organization.getId(), employeeMapper.toDTO(employee));
+        });
+
+        assertNotNull(exception);
+        assertEquals("This employee does not belong to this organization", exception.getMessage());
+    }
+
+    @Test
+    void demoteEmployeeFromOwner_ShouldThrowException_IfEmployeeIsNotOwner() {
+        Employee employee = createEmployee();
+        Organization organization =  createOrganizations(1).get(0);
+        organization.setEmployees(List.of(employee));
+        when(organizationRepository.getById(organization.getId())).thenReturn(organization);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.demoteEmployeeFromOwner(organization.getId(), employeeMapper.toDTO(employee));
+        });
+
+        assertNotNull(exception);
+        assertEquals("This employee does not own this organization", exception.getMessage());
+    }
+
+    @Test
+    void demoteEmployeeFromOwner_ShouldThrowException_IfEmployeeIsTheOnlyOwner() {
+        Employee employee = createEmployee();
+        Organization organization =  createOrganizations(1).get(0);
+        organization.setEmployees(List.of(employee));
+        organization.setOwners(List.of(employee));
+        when(organizationRepository.getById(organization.getId())).thenReturn(organization);
+
+        Exception exception = assertThrows(IllegalArgumentException.class, () -> {
+            underTest.demoteEmployeeFromOwner(organization.getId(), employeeMapper.toDTO(employee));
+        });
+
+        assertNotNull(exception);
+        assertEquals("Cannot demote the only owner of organization", exception.getMessage());
+    }
+
+    @Test
+    void demoteEmployeeFromOwner_ShouldRemoveEmployeeFromOwners() {
+        Employee employee1 = createEmployee();
+        Employee employee2 = createEmployee();
+        employee2.setId(321L);
+        List<Employee> ownersList = new ArrayList<>();
+        ownersList.add(employee1);
+        ownersList.add(employee2);
+        Organization organization = createOrganizations(1).get(0);
+        organization.setOwners(ownersList);
+        organization.setEmployees(List.of(employee1, employee2));
+        Organization organizationWithRemovedOwner = createOrganizations(1).get(0);
+        organizationWithRemovedOwner.setOwners(List.of(employee1));
+        organizationWithRemovedOwner.setEmployees(List.of(employee1, employee2));
+        ArgumentCaptor<Organization> organizationArgumentCaptor = ArgumentCaptor.forClass(Organization.class);
+        when(organizationRepository.getById(organization.getId())).thenReturn(organization);
+        when(organizationRepository.save(organizationArgumentCaptor.capture())).thenReturn(organizationWithRemovedOwner);
+
+        EmployeeDTO result = underTest.demoteEmployeeFromOwner(organization.getId(), employeeMapper.toDTO(employee2));
+
+        assertEquals(employee2.getId(), result.getId());
+        assertEquals(employee2.getFirstName(), result.getFirstName());
+        assertEquals(employee2.getLastName(), result.getLastName());
+        assertEquals(1, organizationArgumentCaptor.getValue().getOwners().size());
+        assertTrue(organizationArgumentCaptor.getValue().getOwners().stream().noneMatch(owner -> owner.getId() == employee2.getId()));
+    }
+//    @Test
+//    void employeeOwnsOrganization_ShouldReturnTrue_IfEmployeeOwnsOrganization() {
+//
+//    }
+//
+//    @Test
+//    void employeeOwnsOrganization_ShouldReturnFalse_IfEmployeeDoesNotOwnOrganization() {
+//
+//    }
+//
+//    @Test
+//    void employeeJoinedOrganization_ShouldReturnTrue_IfEmployeeJoinedOrganization() {
+//
+//    }
+//
+//    @Test
+//    void employeeOwnsOrganization_ShouldReturnFalse_IfEmployeeOwnsOrganization() {
+//
+//    }
+
     private List<Organization> createOrganizations(int count) {
         List<Organization> organizations = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
@@ -195,5 +335,13 @@ class OrganizationServiceTest {
             employees.add(employee);
         }
         return employees;
+    }
+
+    private Employee createEmployee() {
+        Employee employee = new Employee();
+        employee.setId(123L);
+        employee.setFirstName("Adam");
+        employee.setLastName("Test");
+        return employee;
     }
 }
