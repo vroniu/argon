@@ -8,6 +8,7 @@ import src.argon.argon.dto.EmployeeWithPositionDTO;
 import src.argon.argon.dto.OrganizationDTO;
 import src.argon.argon.entity.Employee;
 import src.argon.argon.entity.Organization;
+import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.mapper.OrganizationMapper;
 import src.argon.argon.repository.OrganizationRepository;
 
@@ -23,6 +24,8 @@ public class OrganizationService {
     OrganizationRepository organizationRepository;
     @Autowired
     OrganizationMapper organizationMapper;
+    @Autowired
+    EmployeeMapper employeeMapper;
     @Autowired
     Organization2EmployeeDao organization2EmployeeDao;
 
@@ -84,5 +87,40 @@ public class OrganizationService {
 
     public EmployeeWithPositionDTO getEmployeeInfo(Long organizationId, Long employeeId) {
         return organization2EmployeeDao.getEmployeeInfoForOrganization(organizationId, employeeId);
+    }
+
+    public EmployeeDTO promoteEmployeeToOwner(Long organizationId, EmployeeDTO employee) throws IllegalArgumentException {
+        if (!employeeJoinedOrganization(employee.getId(), organizationId)) {
+            throw new IllegalArgumentException("This employee does not belong to this organization");
+        }
+        if (employeeOwnsOrganization(employee.getId(), organizationId)) {
+            throw new IllegalArgumentException("This employee is already marked as owner of this organization");
+        }
+        Organization organization = organizationRepository.getById(organizationId);
+        organization.getOwners().add(employeeMapper.toEntity(employee));
+        organization = organizationRepository.save(organization);
+        return employeeMapper.toDTO(
+                organization.getOwners().stream()
+                        .filter(organizationOwner -> organizationOwner.getId() == employee.getId())
+                        .findFirst().get());
+    }
+
+    public EmployeeDTO demoteEmployeeFromOwner(Long organizationId, EmployeeDTO employee) throws IllegalArgumentException {
+        if (!employeeJoinedOrganization(employee.getId(), organizationId)) {
+            throw new IllegalArgumentException("This employee does not belong to this organization");
+        }
+        if (!employeeOwnsOrganization(employee.getId(), organizationId)) {
+            throw new IllegalArgumentException("This employee does not own this organization");
+        }
+        Organization organization = organizationRepository.getById(organizationId);
+        if (organization.getOwners().size() == 1) {
+            throw new IllegalArgumentException("Cannot demote the only owner of organization");
+        }
+        organization.getOwners().remove(employeeMapper.toEntity(employee));
+        organization = organizationRepository.save(organization);
+        return employeeMapper.toDTO(
+                organization.getEmployees().stream()
+                        .filter(organizationEmployee -> organizationEmployee.getId() == employee.getId())
+                        .findFirst().get());
     }
 }

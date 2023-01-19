@@ -20,6 +20,7 @@ import { MatTreeModule } from '@angular/material/tree';
 import { ProjectDialogComponent } from './manage-projects/project-dialog/project-dialog.component';
 import { EmployeeDialogComponent } from './manage-organization/employee-dialog/employee-dialog.component';
 import { AddEmployeeDialogComponent } from './manage-organization/add-employee-dialog/add-employee-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import { AddEmployeeDialogComponent } from './manage-organization/add-employee-d
     MatTreeModule,
     MatIconModule,
     MatCardModule,
-    MatChipsModule
+    MatChipsModule,
+    MatTooltipModule
   ],
   exports: [
     OrganizationViewComponent

@@ -21,7 +21,9 @@
       </div>
       <div class="worktime-buttons">
         <button *ngIf="mode === 'JOINED'" mat-raised-button color="primary" (click)="editEmployee(employee)">Edit</button>
-        <button *ngIf="mode === 'JOINED'" mat-raised-button color="warn" (click)="deleteEmployee(employee)">Remove</button>
+        <div *ngIf="mode === 'JOINED'" matTooltip="Cannot remove the owner" [matTooltipDisabled]="!employee.isOwner">
+          <button mat-raised-button color="warn" (click)="deleteEmployee(employee)" [disabled]="employee.isOwner">Remove</button>
+        </div>
         <button *ngIf="mode === 'NOT_JOINED'" mat-raised-button color="primary" (click)="addEmployee(employee)">Add</button>
       </div>
     </mat-card>
