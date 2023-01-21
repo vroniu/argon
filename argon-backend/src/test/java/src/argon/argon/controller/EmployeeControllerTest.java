@@ -16,6 +16,7 @@ import src.argon.argon.security.service.JWTUtilService;
 import src.argon.argon.security.service.UserService;
 import src.argon.argon.service.EmployeeService;
 import src.argon.argon.testutils.AuthBypassUtils;
+import src.argon.argon.testutils.TestDataCreator;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -56,7 +57,7 @@ class EmployeeControllerTest {
         ArgumentCaptor<String> nameArgumentCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<String> emailArgumentCaptor = ArgumentCaptor.forClass(String.class);
         ArgumentCaptor<List<Long>> excludedOrganizationsArgumentCaptor = ArgumentCaptor.forClass(List.class);
-        List<EmployeeDTO> employees = createEmployees(5);
+        List<EmployeeDTO> employees = TestDataCreator.createEmployeeDtos(5);
         when(employeeService.getEmployees(nameArgumentCaptor.capture(), emailArgumentCaptor.capture(),
                 excludedOrganizationsArgumentCaptor.capture())).thenReturn(employees);
 
@@ -73,7 +74,7 @@ class EmployeeControllerTest {
     @Test
     void getAllEmployees_ShouldCallServiceWithListOfExcludedOrganizations_IfParamProvided() throws Exception {
         ArgumentCaptor<List<Long>> excludedOrganizationsArgumentCaptor = ArgumentCaptor.forClass(List.class);
-        List<EmployeeDTO> employees = createEmployees(5);
+        List<EmployeeDTO> employees = TestDataCreator.createEmployeeDtos(5);
         when(employeeService.getEmployees(isNull(), isNull(),
                 excludedOrganizationsArgumentCaptor.capture())).thenReturn(employees);
 
@@ -85,15 +86,5 @@ class EmployeeControllerTest {
         assertEquals(3, excludedOrganizationsArgumentCaptor.getValue().size());
     }
 
-    private List<EmployeeDTO> createEmployees(int count) {
-        List<EmployeeDTO> employeeList = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            EmployeeDTO employee = new EmployeeDTO();
-            employee.setId((long) i);
-            employee.setFirstName("Adam");
-            employee.setLastName("Test" + i);
-            employeeList.add(employee);
-        }
-        return employeeList;
-    }
+
 }

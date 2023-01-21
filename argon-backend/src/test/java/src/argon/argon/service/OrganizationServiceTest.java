@@ -19,10 +19,10 @@ import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.mapper.OrganizationMapper;
 import src.argon.argon.mapper.ProjectMapper;
 import src.argon.argon.repository.OrganizationRepository;
+import src.argon.argon.testutils.TestDataCreator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -107,7 +107,7 @@ class OrganizationServiceTest {
 
     @Test
     void getOrganizationsOwnedByUser_ShouldReturnListOfOrganizations() {
-        List<Organization> ownedOrganizations = createOrganizations(5);
+        List<Organization> ownedOrganizations = TestDataCreator.createOrganizations(5);
         when(organizationRepository.findByOwnersId(321L)).thenReturn(ownedOrganizations);
 
         List<OrganizationDTO> result = underTest.getOrganizationsOwnedByUser(321L);
@@ -117,7 +117,7 @@ class OrganizationServiceTest {
 
     @Test
     void getOrganizationsJoinedByUser_ShouldReturnListOfOrganizations() {
-        List<Organization> ownedOrganizations = createOrganizations(5);
+        List<Organization> ownedOrganizations = TestDataCreator.createOrganizations(5);
         when(organizationRepository.findByEmployeesId(321L)).thenReturn(ownedOrganizations);
 
         List<OrganizationDTO> result = underTest.getOrganizationsJoinedByUser(321L);
@@ -127,7 +127,7 @@ class OrganizationServiceTest {
 
     @Test
     void getOrganizationById_ShouldReturnOrganizationDTO() {
-        when(organizationRepository.getById(321L)).thenReturn(createOrganizations(1).get(0));
+        when(organizationRepository.getById(321L)).thenReturn(TestDataCreator.createOrganizations(1).get(0));
 
         OrganizationDTO result = underTest.getOrganizationById(321L);
 
@@ -141,7 +141,7 @@ class OrganizationServiceTest {
         owner.setId(111L);
         owner.setFirstName("First");
         owner.setLastName("Last");
-        Organization savedOrganization = createOrganizations(1).get(0);
+        Organization savedOrganization = TestDataCreator.createOrganizations(1).get(0);
         ArgumentCaptor<Organization> organizationArgumentCaptor = ArgumentCaptor.forClass(Organization.class);
         OrganizationDTO organizationToSave = organizationMapper.toDTO(savedOrganization);
         organizationToSave.setId(null);
@@ -161,7 +161,7 @@ class OrganizationServiceTest {
 
     @Test
     void getEmployeeInfo_ShouldReturnListOfEmployees() {
-        List<EmployeeWithPositionDTO> employeesWithOrganization = createEmployeesWithOrganization(5);
+        List<EmployeeWithPositionDTO> employeesWithOrganization = TestDataCreator.createEmployeesWithOrganization(5);
         when(organization2EmployeeDao.getEmployeesInfoForOrganization(321L)).thenReturn(employeesWithOrganization);
 
         List<EmployeeWithPositionDTO> result = underTest.getEmployeesWithPositions(321L);
@@ -171,8 +171,8 @@ class OrganizationServiceTest {
 
     @Test
     void promoteEmployeeToOwner_ShouldThrowException_IfEmployeeNotInOrganization() {
-        Employee employee = createEmployee();
-        Organization organization =  createOrganizations(1).get(0);
+        Employee employee = TestDataCreator.createEmployees(1).get(0);
+        Organization organization =  TestDataCreator.createOrganizations(1).get(0);
         when(organizationRepository.getById(organization.getId())).thenReturn(organization);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -184,8 +184,8 @@ class OrganizationServiceTest {
     }
     @Test
     void promoteEmployeeToOwner_ShouldThrowException_IfEmployeeIsAlreadyOwner() {
-        Employee employee = createEmployee();
-        Organization organization =  createOrganizations(1).get(0);
+        Employee employee = TestDataCreator.createEmployees(1).get(0);
+        Organization organization =  TestDataCreator.createOrganizations(1).get(0);
         organization.setEmployees(List.of(employee));
         organization.setOwners(List.of(employee));
         when(organizationRepository.getById(organization.getId())).thenReturn(organization);
@@ -199,11 +199,11 @@ class OrganizationServiceTest {
     }
     @Test
     void promoteEmployeeToOwner_ShouldAddEmployeeToOwners() {
-        Employee employee = createEmployee();
-        Organization organization =  createOrganizations(1).get(0);
+        Employee employee = TestDataCreator.createEmployees(1).get(0);
+        Organization organization =  TestDataCreator.createOrganizations(1).get(0);
         organization.setEmployees(List.of(employee));
         organization.setOwners(new ArrayList<>());
-        Organization organizationWithEmployeeAsOwner = createOrganizations(1).get(0);
+        Organization organizationWithEmployeeAsOwner = TestDataCreator.createOrganizations(1).get(0);
         organizationWithEmployeeAsOwner.setEmployees(List.of(employee));
         organizationWithEmployeeAsOwner.setOwners(List.of(employee));
         ArgumentCaptor<Organization> organizationArgumentCaptor = ArgumentCaptor.forClass(Organization.class);
@@ -220,8 +220,8 @@ class OrganizationServiceTest {
 
     @Test
     void demoteEmployeeFromOwner_ShouldThrowException_IfEmployeeNotInOrganization() {
-        Employee employee = createEmployee();
-        Organization organization =  createOrganizations(1).get(0);
+        Employee employee = TestDataCreator.createEmployees(1).get(0);
+        Organization organization =  TestDataCreator.createOrganizations(1).get(0);
         when(organizationRepository.getById(organization.getId())).thenReturn(organization);
 
         Exception exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -234,8 +234,8 @@ class OrganizationServiceTest {
 
     @Test
     void demoteEmployeeFromOwner_ShouldThrowException_IfEmployeeIsNotOwner() {
-        Employee employee = createEmployee();
-        Organization organization =  createOrganizations(1).get(0);
+        Employee employee = TestDataCreator.createEmployees(1).get(0);
+        Organization organization =  TestDataCreator.createOrganizations(1).get(0);
         organization.setEmployees(List.of(employee));
         when(organizationRepository.getById(organization.getId())).thenReturn(organization);
 
@@ -249,8 +249,8 @@ class OrganizationServiceTest {
 
     @Test
     void demoteEmployeeFromOwner_ShouldThrowException_IfEmployeeIsTheOnlyOwner() {
-        Employee employee = createEmployee();
-        Organization organization =  createOrganizations(1).get(0);
+        Employee employee = TestDataCreator.createEmployees(1).get(0);
+        Organization organization =  TestDataCreator.createOrganizations(1).get(0);
         organization.setEmployees(List.of(employee));
         organization.setOwners(List.of(employee));
         when(organizationRepository.getById(organization.getId())).thenReturn(organization);
@@ -265,16 +265,16 @@ class OrganizationServiceTest {
 
     @Test
     void demoteEmployeeFromOwner_ShouldRemoveEmployeeFromOwners() {
-        Employee employee1 = createEmployee();
-        Employee employee2 = createEmployee();
+        Employee employee1 = TestDataCreator.createEmployees(1).get(0);
+        Employee employee2 = TestDataCreator.createEmployees(1).get(0);
         employee2.setId(321L);
         List<Employee> ownersList = new ArrayList<>();
         ownersList.add(employee1);
         ownersList.add(employee2);
-        Organization organization = createOrganizations(1).get(0);
+        Organization organization = TestDataCreator.createOrganizations(1).get(0);
         organization.setOwners(ownersList);
         organization.setEmployees(List.of(employee1, employee2));
-        Organization organizationWithRemovedOwner = createOrganizations(1).get(0);
+        Organization organizationWithRemovedOwner = TestDataCreator.createOrganizations(1).get(0);
         organizationWithRemovedOwner.setOwners(List.of(employee1));
         organizationWithRemovedOwner.setEmployees(List.of(employee1, employee2));
         ArgumentCaptor<Organization> organizationArgumentCaptor = ArgumentCaptor.forClass(Organization.class);
@@ -289,59 +289,5 @@ class OrganizationServiceTest {
         assertEquals(1, organizationArgumentCaptor.getValue().getOwners().size());
         assertTrue(organizationArgumentCaptor.getValue().getOwners().stream().noneMatch(owner -> owner.getId() == employee2.getId()));
     }
-//    @Test
-//    void employeeOwnsOrganization_ShouldReturnTrue_IfEmployeeOwnsOrganization() {
-//
-//    }
-//
-//    @Test
-//    void employeeOwnsOrganization_ShouldReturnFalse_IfEmployeeDoesNotOwnOrganization() {
-//
-//    }
-//
-//    @Test
-//    void employeeJoinedOrganization_ShouldReturnTrue_IfEmployeeJoinedOrganization() {
-//
-//    }
-//
-//    @Test
-//    void employeeOwnsOrganization_ShouldReturnFalse_IfEmployeeOwnsOrganization() {
-//
-//    }
 
-    private List<Organization> createOrganizations(int count) {
-        List<Organization> organizations = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            Organization organization = new Organization();
-            organization.setId((long) i);
-            organization.setName("Organization " + i);
-            organization.setProjects(Collections.emptyList());
-            organization.setEmployees(Collections.emptyList());
-            organization.setOwners(Collections.emptyList());
-            organizations.add(organization);
-        }
-        return organizations;
-    }
-
-    private List<EmployeeWithPositionDTO> createEmployeesWithOrganization(int count) {
-        List<EmployeeWithPositionDTO> employees = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            EmployeeWithPositionDTO employee = new EmployeeWithPositionDTO();
-            employee.setId((long) i);
-            employee.setFirstName("Employee");
-            employee.setLastName(String.valueOf(i));
-            employee.setPosition("Position");
-            employee.setJoinedDate(LocalDate.now());
-            employees.add(employee);
-        }
-        return employees;
-    }
-
-    private Employee createEmployee() {
-        Employee employee = new Employee();
-        employee.setId(123L);
-        employee.setFirstName("Adam");
-        employee.setLastName("Test");
-        return employee;
-    }
 }

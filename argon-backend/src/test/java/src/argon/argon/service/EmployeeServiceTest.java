@@ -11,8 +11,8 @@ import src.argon.argon.entity.Employee;
 import src.argon.argon.entity.Organization;
 import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.repository.EmployeeRepository;
+import src.argon.argon.testutils.TestDataCreator;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -35,7 +35,7 @@ class EmployeeServiceTest {
 
     @Test
     void getEmployees_ShouldReturnAllEmployees_IfParametersAreNull() {
-        List<Employee> employees = createEmployees(5);
+        List<Employee> employees = TestDataCreator.createEmployees(5);
         when(employeeRepository.findAll()).thenReturn(employees);
 
         List<EmployeeDTO> result = underTest.getEmployees(null, null, Collections.emptyList());
@@ -45,7 +45,7 @@ class EmployeeServiceTest {
 
     @Test
     void getEmployees_ShouldFilterEmployeesByExcludedOrganizations() {
-        List<Employee> employees = createEmployees(5);
+        List<Employee> employees = TestDataCreator.createEmployees(5);
         Organization excludedOrganization = new Organization();
         excludedOrganization.setId(321L);
         employees.get(2).setJoinedOrganizations(List.of(excludedOrganization));
@@ -59,7 +59,7 @@ class EmployeeServiceTest {
 
     @Test
     void save_ShouldReturnSavedEmployee() {
-        Employee savedEmployee = createEmployees(1).get(0);
+        Employee savedEmployee = TestDataCreator.createEmployees(1).get(0);
         EmployeeDTO employeeToSave = employeeMapper.toDTO(savedEmployee);
         employeeToSave.setId(null);
         when(employeeRepository.save(any(Employee.class))).thenReturn(savedEmployee);
@@ -72,7 +72,7 @@ class EmployeeServiceTest {
 
     @Test
     void getEmployee_ShouldReturnEmployee() {
-        Employee employee = createEmployees(1).get(0);
+        Employee employee = TestDataCreator.createEmployees(1).get(0);
         when(employeeRepository.getById(0L)).thenReturn(employee);
 
         EmployeeDTO result = underTest.getEmployee(0L);
@@ -80,18 +80,5 @@ class EmployeeServiceTest {
         assertEquals(0, result.getId());
         assertEquals("Adam", result.getFirstName());
         assertEquals("Test 0", result.getLastName());
-    }
-
-    private List<Employee> createEmployees(int count) {
-        List<Employee> employeeList = new ArrayList<>(count);
-        for (int i = 0; i < count; i++) {
-            Employee employee = new Employee();
-            employee.setJoinedOrganizations(Collections.emptyList());
-            employee.setId((long) i);
-            employee.setFirstName("Adam");
-            employee.setLastName("Test " + i);
-            employeeList.add(employee);
-        }
-        return employeeList;
     }
 }

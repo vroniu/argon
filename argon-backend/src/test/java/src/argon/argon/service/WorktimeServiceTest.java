@@ -11,16 +11,15 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.util.ReflectionTestUtils;
 import src.argon.argon.dto.SubprojectDTO;
 import src.argon.argon.dto.WorktimeDTO;
-import src.argon.argon.entity.Employee;
 import src.argon.argon.entity.Worktime;
 import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.mapper.ProjectMapper;
 import src.argon.argon.mapper.SubprojectMapper;
 import src.argon.argon.mapper.WorktimeMapper;
 import src.argon.argon.repository.WorktimeRepository;
+import src.argon.argon.testutils.TestDataCreator;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -59,10 +58,10 @@ class WorktimeServiceTest {
 
     @Test
     void save_ShouldReturnSavedWorktime() {
-        WorktimeDTO worktimeToSave = createWorktimes(1, null).get(0);
+        WorktimeDTO worktimeToSave = TestDataCreator.createWorktimes(1, null).get(0);
         worktimeToSave.setId(null);
         Worktime savedWorktime = worktimeMapper.toEntity(worktimeToSave);
-        savedWorktime.setEmployee(createEmployee());
+        savedWorktime.setEmployee(TestDataCreator.createEmployees(1).get(0));
         savedWorktime.setId(321L);
         when(worktimeRepository.save(any(Worktime.class))).thenReturn(savedWorktime);
 
@@ -76,10 +75,10 @@ class WorktimeServiceTest {
     void save_ShouldThrowException_IfSubprojectDeleted() {
         SubprojectDTO deletedSubproject = new SubprojectDTO();
         deletedSubproject.setDeleted(true);
-        WorktimeDTO worktimeToSave = createWorktimes(1, deletedSubproject).get(0);
+        WorktimeDTO worktimeToSave = TestDataCreator.createWorktimes(1, deletedSubproject).get(0);
         worktimeToSave.setId(321L);
         Worktime savedWorktime = worktimeMapper.toEntity(worktimeToSave);
-        savedWorktime.setEmployee(createEmployee());
+        savedWorktime.setEmployee(TestDataCreator.createEmployees(1).get(0));
         when(worktimeRepository.save(any(Worktime.class))).thenReturn(savedWorktime);
 
         IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> {
@@ -92,8 +91,8 @@ class WorktimeServiceTest {
 
     @Test
     void getWorktimesAtDayForUser_ShouldReturnWorktimes() {
-        List<Worktime> worktimes = worktimeMapper.toEntity(createWorktimes(5, null));
-        worktimes.forEach(worktime -> worktime.setEmployee(createEmployee()));
+        List<Worktime> worktimes = worktimeMapper.toEntity(TestDataCreator.createWorktimes(5, null));
+        worktimes.forEach(worktime -> worktime.setEmployee(TestDataCreator.createEmployees(1).get(0)));
         ArgumentCaptor<LocalDate> startDateArgumentCaptor = ArgumentCaptor.forClass(LocalDate.class);
         ArgumentCaptor<LocalDate> endDateArgumentCaptor = ArgumentCaptor.forClass(LocalDate.class);
         LocalDate day = LocalDate.of(2023, 1, 16);
@@ -109,8 +108,8 @@ class WorktimeServiceTest {
 
     @Test
     void getWorktimesAtDateRangeForUser_ShouldReturnWorktimes() {
-        List<Worktime> worktimes = worktimeMapper.toEntity(createWorktimes(5, null));
-        worktimes.forEach(worktime -> worktime.setEmployee(createEmployee()));
+        List<Worktime> worktimes = worktimeMapper.toEntity(TestDataCreator.createWorktimes(5, null));
+        worktimes.forEach(worktime -> worktime.setEmployee(TestDataCreator.createEmployees(1).get(0)));
         ArgumentCaptor<LocalDate> startDateArgumentCaptor = ArgumentCaptor.forClass(LocalDate.class);
         ArgumentCaptor<LocalDate> endDateArgumentCaptor = ArgumentCaptor.forClass(LocalDate.class);
         LocalDate start = LocalDate.of(2023, 1, 13);
@@ -127,8 +126,8 @@ class WorktimeServiceTest {
 
     @Test
     void getWorktimesAtDateRangeForEmployeesInSubprojects_ShouldReturnWorktimes() {
-        List<Worktime> worktimes = worktimeMapper.toEntity(createWorktimes(5, null));
-        worktimes.forEach(worktime -> worktime.setEmployee(createEmployee()));
+        List<Worktime> worktimes = worktimeMapper.toEntity(TestDataCreator.createWorktimes(5, null));
+        worktimes.forEach(worktime -> worktime.setEmployee(TestDataCreator.createEmployees(1).get(0)));
         LocalDate start = LocalDate.of(2023, 1, 13);
         LocalDate end = LocalDate.of(2023, 1, 16);
         when(worktimeRepository.findByDayBetweenAndEmployeeIdInAndSubprojectIdIn(any(),
@@ -144,35 +143,6 @@ class WorktimeServiceTest {
         underTest.deleteWorktime(123L);
 
         verify(worktimeRepository).deleteById(123L);
-    }
-
-    private List<WorktimeDTO> createWorktimes(int count, SubprojectDTO subproject) {
-        List<WorktimeDTO> worktimes = new ArrayList<>(count);
-        if (subproject == null) {
-            subproject = new SubprojectDTO();
-            subproject.setId(123L);
-            subproject.setDeleted(false);
-        }
-        for (int i = 0; i < count; i++) {
-            WorktimeDTO worktime = new WorktimeDTO();
-            worktime.setId((long) i);
-            worktime.setDay(LocalDate.now());
-            worktime.setHours((short) 3);
-            worktime.setComment("Comment " + i);
-            worktime.setSubproject(subproject);
-            worktimes.add(worktime);
-        }
-        return worktimes;
-    }
-
-
-
-    private Employee createEmployee() {
-        Employee employee = new Employee();
-        employee.setId(123L);
-        employee.setFirstName("Adam");
-        employee.setLastName("Test");
-        return employee;
     }
 
 }
