@@ -1,9 +1,6 @@
 package src.argon.argon.testutils;
 
-import src.argon.argon.dto.EmployeeDTO;
-import src.argon.argon.dto.EmployeeWithPositionDTO;
-import src.argon.argon.dto.SubprojectDTO;
-import src.argon.argon.dto.WorktimeDTO;
+import src.argon.argon.dto.*;
 import src.argon.argon.entity.Employee;
 import src.argon.argon.entity.Organization;
 import src.argon.argon.entity.Project;
@@ -58,6 +55,20 @@ public class TestDataCreator {
         List<Organization> organizations = new ArrayList<>(count);
         for (int i = 0; i < count; i++) {
             Organization organization = new Organization();
+            organization.setId((long) i);
+            organization.setName("Organization " + i);
+            organization.setProjects(Collections.emptyList());
+            organization.setEmployees(Collections.emptyList());
+            organization.setOwners(Collections.emptyList());
+            organizations.add(organization);
+        }
+        return organizations;
+    }
+
+    public static List<OrganizationDTO> createOrganizationDTOs(int count) {
+        List<OrganizationDTO> organizations = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            OrganizationDTO organization = new OrganizationDTO();
             organization.setId((long) i);
             organization.setName("Organization " + i);
             organization.setProjects(Collections.emptyList());
