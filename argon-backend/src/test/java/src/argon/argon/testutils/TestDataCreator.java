@@ -94,6 +94,19 @@ public class TestDataCreator {
         return projectList;
     }
 
+    public static List<ProjectDTO> createProjectDTOs(int count) {
+        List<ProjectDTO> projectList = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            ProjectDTO project = new ProjectDTO();
+            project.setName("Project " + i);
+            project.setSubprojects(Collections.emptyList());
+            project.setOrganizationId(111L);
+            project.setOrganizationName("Test Organization");
+            projectList.add(project);
+        }
+        return projectList;
+    }
+
     public static List<WorktimeDTO> createWorktimes(int count, SubprojectDTO subproject) {
         List<src.argon.argon.dto.WorktimeDTO> worktimes = new ArrayList<>(count);
         if (subproject == null) {
