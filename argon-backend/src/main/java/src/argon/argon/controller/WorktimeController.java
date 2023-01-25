@@ -82,7 +82,7 @@ public class WorktimeController {
     @PutMapping("")
     public ResponseEntity<WorktimeDTO> updateWorktime(@RequestBody WorktimeDTO worktimeDTO) {
         WorktimeDTO result = worktimeService.save(worktimeDTO);
-        return ResponseEntity.status(201).body(result);
+        return ResponseEntity.status(200).body(result);
     }
 
     @DeleteMapping("/{id}")

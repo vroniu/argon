@@ -1,5 +1,7 @@
 package src.argon.argon.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -8,6 +10,7 @@ public class WorktimeDTO implements Serializable {
     private Long employeeId;
     private String employeeName;
     private SubprojectDTO subproject;
+    @JsonFormat(pattern="yyyy-MM-dd")
     private LocalDate day;
     private Short hours;
     private String comment;

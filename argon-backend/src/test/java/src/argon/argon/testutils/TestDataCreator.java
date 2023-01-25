@@ -108,14 +108,14 @@ public class TestDataCreator {
     }
 
     public static List<WorktimeDTO> createWorktimes(int count, SubprojectDTO subproject) {
-        List<src.argon.argon.dto.WorktimeDTO> worktimes = new ArrayList<>(count);
+        List<WorktimeDTO> worktimes = new ArrayList<>(count);
         if (subproject == null) {
             subproject = new SubprojectDTO();
             subproject.setId(123L);
             subproject.setDeleted(false);
         }
         for (int i = 0; i < count; i++) {
-            src.argon.argon.dto.WorktimeDTO worktime = new src.argon.argon.dto.WorktimeDTO();
+            WorktimeDTO worktime = new WorktimeDTO();
             worktime.setId((long) i);
             worktime.setDay(LocalDate.now());
             worktime.setHours((short) 3);
@@ -124,6 +124,21 @@ public class TestDataCreator {
             worktimes.add(worktime);
         }
         return worktimes;
+    }
+
+    public static List<SubprojectDTO> createSubprojectDTOs(int count) {
+        List<SubprojectDTO> subprojects = new ArrayList<>(count);
+        for (int i = 0; i < count; i++) {
+            SubprojectDTO subproject = new SubprojectDTO();
+            subproject.setId((long) i);
+            subproject.setDeleted(false);
+            subproject.setOrganizationId(123L);
+            subproject.setName("Subproject " + i);
+            subproject.setProjectName("Parent Project");
+            subproject.setProjectId(321L);
+            subprojects.add(subproject);
+        }
+        return subprojects;
     }
 
 }
