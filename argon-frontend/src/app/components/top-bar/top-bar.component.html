@@ -1,13 +1,10 @@
 <div class="bar">
   <div>
-    <button *ngIf="displayMenu" type="button" id="menu-button" mat-icon-button color="#ffffff" aria-label="menu" (click)="onMenuButtonClick()">
-      <mat-icon>menu</mat-icon>
-    </button>
   </div>
-  <a routerLink="/">
+  <a [routerLink]="displayUserInfo ? '/main/organizations' : '/'">
     <img src="assets/logo.svg" id="argon-logo" alt="Argon logo">
   </a>
-  <div>
+  <div style="flex-grow: 1;">
     <div *ngIf="displayUserInfo" id="user-info" class="pad-8px">
       <div style="color: white; margin-right: 8px;">
         Welcome, <span style="font-weight: bold;">{{ user.employee.firstName + ' ' + user.employee.lastName }}</span>!
