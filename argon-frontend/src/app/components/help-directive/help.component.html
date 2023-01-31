@@ -1,0 +1,10 @@
+<mat-card matRipple (click)="toggleHelp()" *ngIf="showHelp; else button" style="background-color: var(--material-primary); color: white; border-radius: 20px;">
+  <mat-card-title>{{ help.title }}</mat-card-title>
+  <mat-card-content *ngFor="let content of help.content">{{ content }}</mat-card-content>
+  <mat-card-content style="font-weight: bold;">Press anywhere on this card to close.</mat-card-content>
+</mat-card>
+<ng-template #button>
+  <button mat-raised-button color="primary" style="display: absolute; top: 0px; right: 0px; border-radius: 20px;" (click)="toggleHelp()">
+    ?
+  </button>
+</ng-template>

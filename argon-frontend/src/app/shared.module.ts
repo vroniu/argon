@@ -1,3 +1,4 @@
+import { HelpModule } from './components/help-directive/help.module';
 import { ConfirmDialogComponent } from './components/confirm-dialog/confirm-dialog.component';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatNativeDateModule, MatRippleModule } from '@angular/material/core';
@@ -19,7 +20,7 @@ import { MatSelectModule } from '@angular/material/select';
 
 @NgModule({
   declarations: [
-    ConfirmDialogComponent
+    ConfirmDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -38,7 +39,8 @@ import { MatSelectModule } from '@angular/material/select';
     MatRippleModule,
     MatDialogModule,
     MatNativeDateModule,
-    MatSelectModule
+    MatSelectModule,
+    HelpModule
   ],
   exports: [
     CommonModule,
@@ -56,7 +58,8 @@ import { MatSelectModule } from '@angular/material/select';
     HttpClientModule,
     MatRippleModule,
     MatDialogModule,
-    MatSelectModule
+    MatSelectModule,
+    HelpModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' } },

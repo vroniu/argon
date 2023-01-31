@@ -1,0 +1,10 @@
+{
+  "manage-worktimes": {
+    "title": "Managing workimes",
+    "content": [
+      "Here, you can see all the worktimes submited by the organization employees.",
+      "You can filter by specific employees, projects and subprojects and in certain date ranges.",
+      "When you select your wanted criteria, press 'Search worktimes' to fetch the worktimes."
+    ]
+  }
+}
