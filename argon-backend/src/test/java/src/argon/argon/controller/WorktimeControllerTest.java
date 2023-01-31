@@ -11,10 +11,13 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
+import src.argon.argon.dto.EmployeeDTO;
+import src.argon.argon.dto.OrganizationDTO;
 import src.argon.argon.dto.WorktimeDTO;
 import src.argon.argon.security.models.JsonResponse;
 import src.argon.argon.security.service.JWTUtilService;
 import src.argon.argon.security.service.UserService;
+import src.argon.argon.service.OrganizationService;
 import src.argon.argon.service.WorktimeService;
 import src.argon.argon.testutils.AuthBypassUtils;
 import src.argon.argon.testutils.LocalDateGsonAdapter;
@@ -43,6 +46,9 @@ class WorktimeControllerTest {
 
     @MockBean
     UserService userService;
+
+    @MockBean
+    OrganizationService organizationService;
 
     Gson gson = new GsonBuilder().registerTypeAdapter(LocalDate.class, new LocalDateGsonAdapter()).create();
 
@@ -107,11 +113,63 @@ class WorktimeControllerTest {
     }
 
     @Test
+    @WithMockCustomUser(id = "123", employeeId = "123")
     void getFilteredWorktimesForOrganization_ShouldThrowException_IfUserDoesNotOwnOrganization() throws Exception {
+        EmployeeDTO owner = TestDataCreator.createEmployeeDtos(1).get(0);
+        OrganizationDTO organization = TestDataCreator.createOrganizationDTOs(1).get(0);
+        organization.setOwners(List.of(owner));
+        when(organizationService.getOrganizationById(321L)).thenReturn(organization);
+
+        MvcResult result = mockMvc.perform(
+                get("/worktimes/filter/321?rangeStart=2023-01-01&rangeEnd=2023-01-01&employeeIds=[123,124]&subprojectIds=[1,2]")
+                        .header("Authorization", "Bearer token")
+                        .header("Content-Type", "application/json"))
+                .andReturn();
+        JsonResponse resultResponse = gson.fromJson(result.getResponse().getContentAsString(), JsonResponse.class);
+
+        assertEquals(401, result.getResponse().getStatus());
+        assertEquals("NOT_AN_OWNER", resultResponse.getStatus());
+        assertEquals("Only owners can display full list of worktimes", resultResponse.getDescription());
     }
 
     @Test
+    @WithMockCustomUser(id = "123", employeeId = "123")
     void getFilteredWorktimesForOrganization_ShouldCallServiceWithParameters() throws Exception {
+        List<WorktimeDTO> worktimes = TestDataCreator.createWorktimes(5, null);
+        EmployeeDTO owner = TestDataCreator.createEmployeeDtos(1).get(0);
+        owner.setId(123L);
+        OrganizationDTO organization = TestDataCreator.createOrganizationDTOs(1).get(0);
+        ArgumentCaptor<LocalDate> startDateArgumentCaptor = ArgumentCaptor.forClass(LocalDate.class);
+        ArgumentCaptor<LocalDate> endDateArgumentCaptor = ArgumentCaptor.forClass(LocalDate.class);
+        ArgumentCaptor<List<Long>> employeeIdsArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        ArgumentCaptor<List<Long>> subprojectIdsArgumentCaptor = ArgumentCaptor.forClass(List.class);
+        organization.setOwners(List.of(owner));
+        when(organizationService.getOrganizationById(321L)).thenReturn(organization);
+        when(worktimeService.getWorktimesAtDateRangeForEmployeesInSubprojects(startDateArgumentCaptor.capture(),
+                endDateArgumentCaptor.capture(), employeeIdsArgumentCaptor.capture(), subprojectIdsArgumentCaptor.capture()))
+                .thenReturn(worktimes);
+
+        MvcResult result = mockMvc.perform(
+                        get("/worktimes/filter/321?rangeStart=2023-01-02&rangeEnd=2023-02-03&employeeIds=[123,124]&subprojectIds=[1,2]")
+                                .header("Authorization", "Bearer token")
+                                .header("Content-Type", "application/json"))
+                .andReturn();
+        List<WorktimeDTO> resultResponse = gson.fromJson(result.getResponse().getContentAsString(), List.class);
+
+        assertEquals(200, result.getResponse().getStatus());
+        assertEquals(5, resultResponse.size());
+        assertEquals(2023, startDateArgumentCaptor.getValue().getYear());
+        assertEquals(1, startDateArgumentCaptor.getValue().getMonthValue());
+        assertEquals(2, startDateArgumentCaptor.getValue().getDayOfMonth());
+        assertEquals(2023, endDateArgumentCaptor.getValue().getYear());
+        assertEquals(2, endDateArgumentCaptor.getValue().getMonthValue());
+        assertEquals(3, endDateArgumentCaptor.getValue().getDayOfMonth());
+        assertEquals(2, employeeIdsArgumentCaptor.getValue().size());
+        assertTrue(employeeIdsArgumentCaptor.getValue().contains(123L));
+        assertTrue(employeeIdsArgumentCaptor.getValue().contains(124L));
+        assertEquals(2, subprojectIdsArgumentCaptor.getValue().size());
+        assertTrue(subprojectIdsArgumentCaptor.getValue().contains(1L));
+        assertTrue(subprojectIdsArgumentCaptor.getValue().contains(2L));
     }
 
     @Test

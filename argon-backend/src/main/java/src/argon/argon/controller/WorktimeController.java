@@ -2,13 +2,12 @@ package src.argon.argon.controller;
 
 import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
-import src.argon.argon.dto.EmployeeDTO;
 import src.argon.argon.dto.OrganizationDTO;
 import src.argon.argon.dto.WorktimeDTO;
-import src.argon.argon.mapper.EmployeeMapper;
 import src.argon.argon.security.models.JsonResponse;
 import src.argon.argon.security.models.User;
 import src.argon.argon.service.OrganizationService;
@@ -31,9 +30,6 @@ public class WorktimeController {
     @Autowired
     OrganizationService organizationService;
 
-    @Autowired
-    EmployeeMapper employeeMapper;
-
     @GetMapping("/day")
     public List<WorktimeDTO> getWorktimesAtDay(@RequestParam String day, @RequestParam Long organizationId, Authentication authentication) {
         LocalDate dateDay = LocalDate.parse(day, dtf);
@@ -50,21 +46,21 @@ public class WorktimeController {
     }
 
     @GetMapping("/filter/{organizationId}")
-    public List<WorktimeDTO> getFilteredWorktimesForOrganization(@RequestParam String rangeStart, @RequestParam String rangeEnd,
+    public ResponseEntity<?> getFilteredWorktimesForOrganization(@RequestParam String rangeStart, @RequestParam String rangeEnd,
                                                                  @RequestParam String employeeIds, @RequestParam String subprojectIds,
                                                                  @PathVariable Long organizationId, Authentication authentication) {
         OrganizationDTO organization = organizationService.getOrganizationById(organizationId);
         User user = (User) authentication.getPrincipal();
-        EmployeeDTO employeeDTO = employeeMapper.toDTO(user.getEmployee());
-        if (!organization.getOwners().contains(employeeDTO)) {
-            // TODO check organization ownership
+        if (organization.getOwners().stream().noneMatch(owner -> owner.getId() == user.getEmployee().getId())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(new JsonResponse("NOT_AN_OWNER", "Only owners can display full list of worktimes"));
         }
         LocalDate dateFrom = LocalDate.parse(rangeStart, dtf);
         LocalDate dateTo = LocalDate.parse(rangeEnd, dtf);
         List<Long> employeeIdsList = List.of(gson.fromJson(employeeIds, Long[].class));
         List<Long> subprojectIdsList = List.of(gson.fromJson(subprojectIds, Long[].class));
 
-        return worktimeService.getWorktimesAtDateRangeForEmployeesInSubprojects(dateFrom, dateTo, employeeIdsList, subprojectIdsList);
+        return ResponseEntity.ok(worktimeService.getWorktimesAtDateRangeForEmployeesInSubprojects(dateFrom, dateTo, employeeIdsList, subprojectIdsList));
     }
 
     @PostMapping("")
