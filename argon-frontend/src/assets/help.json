@@ -62,5 +62,17 @@
       "Click on the organization card to submit your working time and review your past details.",
       "Keep in mind, if you are an owner of one organization, it will show in this section as well so you can enter your working time details through it."
     ]
+  },
+  "worktimes-archive": {
+    "title": "See your previous worktimes",
+    "content": [
+      "Select the date range and press 'Get worktimes' to see your previous worktimes from that time period."
+    ]
+  },
+  "organization-info": {
+    "title": "Here is all the information of this organization that relates to you",
+    "content": [
+      "You can see the organization details and you postion in the organization."
+    ]
   }
 }
