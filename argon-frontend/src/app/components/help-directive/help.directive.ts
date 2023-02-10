@@ -17,8 +17,8 @@ export interface HelpDirectiveOptions {
   selector: '[argHelp]'
 })
 export class HelpDirective {
-  defaultTopOffset = '2.3rem';
-  defaultRightOffset = '0.2rem'
+  defaultTopOffset = '-2.3rem';
+  defaultRightOffset = '-0.2rem'
   helpComponentElement: HTMLElement;
   parentComponentElement: HTMLElement;
 
@@ -32,8 +32,8 @@ export class HelpDirective {
     this.helpComponentElement = helpComponent.location.nativeElement as HTMLElement;
     this.parentComponentElement = helpComponent.location.nativeElement.parentElement as HTMLElement;
     this.helpComponentElement.style.position = 'absolute';
-    this.helpComponentElement.style.top = `-${options.offsetTop ? options.offsetTop : this.defaultTopOffset}`;
-    this.helpComponentElement.style.right = `-${options.offsetRight ? options.offsetRight : this.defaultRightOffset}`;
+    this.helpComponentElement.style.top = options.offsetTop ? options.offsetTop : this.defaultTopOffset;
+    this.helpComponentElement.style.right = options.offsetRight ? options.offsetRight : this.defaultRightOffset;
     this.parentComponentElement.style.position = 'relative';
   }
 

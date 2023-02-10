@@ -2,7 +2,7 @@
 <div class="main-content">
   <mat-card>
     <p class="card-title">Owned organizations</p>
-    <div class="organization-grid">
+    <div class="organization-grid" *argHelp="{helpKey: 'owned-organizations', offsetTop: '-0.7rem', offsetRight: '-1.3rem'}">
         <arg-organization
           *ngFor="let ownedOrganization of ownedOrganizations"
           [organization]="ownedOrganization"
@@ -12,7 +12,7 @@
   </mat-card>
   <mat-card>
     <p class="card-title">Joined organizations</p>
-    <div class="organization-grid">
+    <div class="organization-grid" *argHelp="{helpKey: 'joined-organizations', offsetTop: '-0.7rem', offsetRight: '-1.3rem'}">
       <arg-organization
         *ngFor="let ownedOrganization of joinedOrganizations"
         [organization]="ownedOrganization"
