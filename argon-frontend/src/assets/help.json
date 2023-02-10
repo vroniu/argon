@@ -1,10 +1,52 @@
 {
   "manage-worktimes": {
-    "title": "Managing workimes",
+    "title": "View all the data you need",
     "content": [
       "Here, you can see all the worktimes submited by the organization employees.",
       "You can filter by specific employees, projects and subprojects and in certain date ranges.",
       "When you select your wanted criteria, press 'Search worktimes' to fetch the worktimes."
+    ]
+  },
+  "manage-projects": {
+    "title": "Create a project structure",
+    "content": [
+      "You can create a tree-like structure for projects and subprojects.",
+      "If you wish to add a new project, use the 'Add project' button at the bottom.",
+      "Each project can have its own subproject list - you can expand that list by clicking the chevron on the left.",
+      "Projects and their subprojects can be edited (pencil icon) or deleted (trash can icon). Beware - if you delete a project, all of its project will be deleted!"
+    ]
+  },
+  "manage-organization": {
+    "title": "Manage your organization and it's employees",
+    "content": [
+      "You can edit information about your organization and delete it if you wish so.",
+      "View all the employees that belong to your organization in the 'List of employees' section.",
+      "For each employee, you can edit their information associated with the organization or delete them from the organization.",
+      "Approporiate tags will show in the employee's card if that person is an owner.",
+      "Add new employees by clicking the button at the bottom of the card."
+    ]
+  },
+  "add-employee": {
+    "title": "Add employees to your organization",
+    "content": [
+      "Add new employees from users registered in the app.",
+      "You can filter them by their name or their email"
+    ]
+  },
+  "edit-employee": {
+    "title": "Edit employee data",
+    "content": [
+      "Change the employee's position within the organization, or promote their status to the owner of this organization.",
+      "Keep in mind you cannot promote/demote yourself."
+    ]
+  },
+  "worktime": {
+    "title": "Enter worktime details",
+    "content": [
+      "Select the day that the work was performed.",
+      "Select the project - once you select it - the subproject dropdown will populate with the subprojects that are available. Select that as well.",
+      "Using the slider, input how many hours of work was done - minumum value is 1 hour while maximum is 10.",
+      "If you wish so, you can enter additional comments - if not, leave this empty"
     ]
   }
 }

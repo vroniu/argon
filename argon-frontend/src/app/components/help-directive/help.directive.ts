@@ -1,12 +1,11 @@
 import { HelpComponent } from './help.component';
-import { Directive, TemplateRef, ViewContainerRef, OnInit, ViewRef, ComponentFactoryResolver, Input, ElementRef } from '@angular/core';
+import { Directive, TemplateRef, ViewContainerRef, ComponentFactoryResolver, Input } from '@angular/core';
 import * as helpEntries from '../../../assets/help.json';
 
 export interface HelpEntry {
   title: string;
   content: string[];
 }
-
 
 export interface HelpDirectiveOptions {
   helpKey: string;
@@ -18,7 +17,8 @@ export interface HelpDirectiveOptions {
   selector: '[argHelp]'
 })
 export class HelpDirective {
-  defaultOffset = '1rem';
+  defaultTopOffset = '2.3rem';
+  defaultRightOffset = '0.2rem'
   helpComponentElement: HTMLElement;
   parentComponentElement: HTMLElement;
 
@@ -32,8 +32,8 @@ export class HelpDirective {
     this.helpComponentElement = helpComponent.location.nativeElement as HTMLElement;
     this.parentComponentElement = helpComponent.location.nativeElement.parentElement as HTMLElement;
     this.helpComponentElement.style.position = 'absolute';
-    this.helpComponentElement.style.top = `-${options.offsetTop ? options.offsetTop : this.defaultOffset}`;
-    this.helpComponentElement.style.right = `-${options.offsetRight ? options.offsetRight : this.defaultOffset}`;
+    this.helpComponentElement.style.top = `-${options.offsetTop ? options.offsetTop : this.defaultTopOffset}`;
+    this.helpComponentElement.style.right = `-${options.offsetRight ? options.offsetRight : this.defaultRightOffset}`;
     this.parentComponentElement.style.position = 'relative';
   }
 

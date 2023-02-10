@@ -4,7 +4,8 @@ import { MatRipple } from '@angular/material/core';
 
 @Component({
   selector: 'arg-help',
-  templateUrl: './help.component.html'
+  templateUrl: './help.component.html',
+  styleUrls: ['./help.component.css']
 })
 export class HelpComponent {
   @Input() help: HelpEntry;

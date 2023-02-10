@@ -21,6 +21,7 @@
       <div class="card-title">Manage projects</div>
       <div class="card-content">
         <arg-manage-projects
+          *argHelp="{helpKey: 'manage-projects'}"
           [organization]="organizationSubject.asObservable()"
         ></arg-manage-projects>
       </div>
@@ -29,6 +30,7 @@
       <div class="card-title">Manage organization</div>
       <div class="card-content">
         <arg-manage-organization
+          *argHelp="{helpKey: 'manage-organization'}"
           [organization]="organizationSubject.asObservable()"
         ></arg-manage-organization>
       </div>

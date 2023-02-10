@@ -1,5 +1,5 @@
-<h1 mat-dialog-title>Edit worktime</h1>
-<div mat-dialog-content>
+<h1 *argHelp="{helpKey: 'worktime', offsetTop: '0'}" mat-dialog-title>Edit worktime</h1>
+<div mat-dialog-content id="content">
   <arg-worktime-form
     [worktime]="data.worktime"
     [projects]="data.projects"

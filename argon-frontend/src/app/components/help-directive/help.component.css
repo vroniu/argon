@@ -1,0 +1,24 @@
+mat-card {
+  background-color: var(--material-primary);
+  color: white;
+  border-radius: 20px;
+  z-index: 1;
+  cursor: pointer;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+button {
+  display: absolute;
+  top: 0px;
+  right: 0px;
+  border-radius: 20px;
+  opacity: 50%;
+  transition: all ease-out 200ms;
+}
+
+button:hover {
+  opacity: 100%;
+}
